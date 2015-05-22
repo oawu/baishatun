@@ -20,7 +20,7 @@ class Main extends Site_controller {
       return array ('id' => $t->id, 'lat' => $t->lat, 'lng' => $t->lng);
     }, $paths);
 
-    return $this->output_json ($result, 60 * 5);
+    return $this->output_json ($result);
   }
   public function crontab () {
     $this->load->library ('phpQuery');
@@ -45,16 +45,34 @@ class Main extends Site_controller {
       return ErrorLog::create (array (
           'message' => '重複！'
         ));
-    // else
-      // $this->output->delete_cache ('main/api/0');
+    else
+      $this->output->delete_all_cache ();
   }
   public function index () {
 
     foreach ($paths = Path::all () as $path) {
-      $this->add_hidden (array ('class' => 'latlng', 'data-lat' => $path->lat, 'data-lng' => $path->lng));
+      $this->add_hidden (array ('class' => 'latlng', 'data-id' => $path->id, 'data-lat' => $path->lat, 'data-lng' => $path->lng));
     }
 
     $this->add_js ('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&language=zh-TW', false)
+         ->add_hidden (array ('id' => 'set_position_url', 'value' => base_url ($this->get_class (), 'set_position')))
          ->load_view (null);
+  }
+  public function set_position () {
+    if (!$this->is_ajax ())
+      return show_error ("It's not Ajax request!<br/>Please confirm your program again.");
+    
+    $id = $this->input_post ('id');
+    $lat = $this->input_post ('lat');
+    $lng = $this->input_post ('lng');
+
+    if (!($id && $lat && $lng && ($path = Path::find_by_id ($id))))
+      return $this->output_json (array ('status' => false));
+
+    $path->lat = $lat;
+    $path->lng = $lng;
+    $path->save ();
+
+    return $this->output_json (array ('status' => true));
   }
 }
