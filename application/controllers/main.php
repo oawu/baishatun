@@ -10,7 +10,18 @@ class Main extends Site_controller {
   public function __construct () {
     parent::__construct ();
   }
+  public function api ($id = 0) {
+    header('Content-type: text/html');
+    header('Access-Control-Allow-Origin: http://comdan66.github.io');
 
+    $paths = Path::find ('all', array ('conditions' => array ('id > ?', $id)));
+
+    $result = array_map (function ($t) {
+      return array ('id' => $t->id, 'lat' => $t->lat, 'lng' => $t->lng);
+    }, $paths);
+
+    return $this->output_json ($result);
+  }
   public function crontab () {
     $this->load->library ('phpQuery');
     $url = 'http://www.baishatun.com.tw/gps/';
