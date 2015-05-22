@@ -24,6 +24,11 @@ class Main extends Site_controller {
 
     return $this->output_json ($result);
   }
+  public function query () {
+    $this->load->helper ('file');
+    @write_file (FCPATH . 'application/logs/query.log', '', FOPEN_READ_WRITE_CREATE_DESTRUCTIVE);
+  }
+
   public function crontab () {
     $this->load->library ('phpQuery');
     $url = 'http://www.baishatun.com.tw/gps/';
@@ -52,6 +57,7 @@ class Main extends Site_controller {
   }
   public function index () {
     return false;
+    
     foreach ($paths = Path::all () as $path) {
       $this->add_hidden (array ('class' => 'latlng', 'data-id' => $path->id, 'data-lat' => $path->lat, 'data-lng' => $path->lng));
     }
