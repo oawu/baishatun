@@ -26,7 +26,10 @@ class Main extends Site_controller {
   }
   public function query () {
     $this->load->helper ('file');
-    @write_file (FCPATH . 'application/logs/query.log', '', FOPEN_READ_WRITE_CREATE_DESTRUCTIVE);
+
+    return ErrorLog::create (array (
+        'message' => write_file (FCPATH . 'application/logs/query.log', '', FOPEN_READ_WRITE_CREATE_DESTRUCTIVE) ? '清除 query.log 成功！' : '清除 query.log 失敗！'
+      ));
   }
 
   public function crontab () {
@@ -57,7 +60,7 @@ class Main extends Site_controller {
   }
   public function index () {
     return false;
-    
+
     foreach ($paths = Path::all () as $path) {
       $this->add_hidden (array ('class' => 'latlng', 'data-id' => $path->id, 'data-lat' => $path->lat, 'data-lng' => $path->lng));
     }
