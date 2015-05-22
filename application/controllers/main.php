@@ -13,12 +13,14 @@ class Main extends Site_controller {
   public function api ($id = 0) {
     header('Content-type: text/html');
     header('Access-Control-Allow-Origin: http://comdan66.github.io');
+    // header('Access-Control-Allow-Origin: *');
 
     $paths = Path::find ('all', array ('conditions' => array ('id > ?', $id)));
+    $count = round (Path::count () / 100);
 
-    $result = array_map (function ($t) {
-      return array ('id' => $t->id, 'lat' => $t->lat, 'lng' => $t->lng);
-    }, $paths);
+    $result = array_slice (array_filter (array_map (function ($t) use ($count) {
+              return $t->id % $count == 0 ? array ('id' => $t->id, 'lat' => $t->lat, 'lng' => $t->lng) : null;
+            }, $paths)), 0);
 
     return $this->output_json ($result);
   }
@@ -49,7 +51,6 @@ class Main extends Site_controller {
     //   $this->output->delete_all_cache ();
   }
   public function index () {
-    return false;
     foreach ($paths = Path::all () as $path) {
       $this->add_hidden (array ('class' => 'latlng', 'data-id' => $path->id, 'data-lat' => $path->lat, 'data-lng' => $path->lng));
     }
