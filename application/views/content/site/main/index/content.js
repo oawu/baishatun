@@ -59,7 +59,7 @@ $(function () {
           map: _map,
           draggable: true,
           position: new google.maps.LatLng (t.lat, t.lng),
-          icon: i == latlngs.length - 1 ? 'resource/image/gps.png' : {
+          icon: i == latlngs.length - 1 ? '/resource/image/gps.png' : {
             path: circlePath (10),
             strokeColor: 'rgba(249, 39, 114, 1)',
             strokeWeight: 1,
