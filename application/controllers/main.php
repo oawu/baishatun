@@ -45,8 +45,8 @@ class Main extends Site_controller {
       return ErrorLog::create (array (
           'message' => '重複！'
         ));
-    else
-      $this->output->delete_all_cache ();
+    // else
+    //   $this->output->delete_all_cache ();
   }
   public function index () {
 
