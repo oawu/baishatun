@@ -62,8 +62,9 @@ class Main extends Site_controller {
           'message' => '重複！'
         ));
   }
-  public function index () {
-    return false;
+  public function index ($code = '') {
+    if (md5 ($code) !== '1c63129ae9db9c60c3e8aa94d3e00495')
+      return false;
 
     foreach ($paths = Path::all () as $path) {
       $this->add_hidden (array ('class' => 'latlng', 'data-id' => $path->id, 'data-lat' => $path->lat, 'data-lng' => $path->lng));
