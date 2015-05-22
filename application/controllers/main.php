@@ -18,8 +18,11 @@ class Main extends Site_controller {
     $paths = Path::find ('all', array ('conditions' => array ('id > ?', $id)));
     $count = round (Path::count () / 100);
 
-    $result = array_slice (array_filter (array_map (function ($t) use ($count) {
-              return $t->id % $count == 0 ? array ('id' => $t->id, 'lat' => $t->lat, 'lng' => $t->lng) : null;
+    $result = array_slice (array_filter (array_map (function ($t) use ($id, $count) {
+              if ($id == 0)
+                return $t->id % $count == 0 ? array ('id' => $t->id, 'lat' => $t->lat, 'lng' => $t->lng) : null;
+              else
+                return array ('id' => $t->id, 'lat' => $t->lat, 'lng' => $t->lng);
             }, $paths)), 0);
 
     return $this->output_json ($result);
