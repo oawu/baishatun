@@ -49,7 +49,7 @@ class Main extends Site_controller {
     //   $this->output->delete_all_cache ();
   }
   public function index () {
-
+    return false;
     foreach ($paths = Path::all () as $path) {
       $this->add_hidden (array ('class' => 'latlng', 'data-id' => $path->id, 'data-lat' => $path->lat, 'data-lng' => $path->lng));
     }
