@@ -20,9 +20,9 @@ class Main extends Site_controller {
 
     $result = array_slice (array_filter (array_map (function ($t) use ($id, $count) {
               if ($id == 0)
-                return $t->id % $count == 0 ? array ('id' => $t->id, 'lat' => $t->lat, 'lng' => $t->lng, 'time' => $t->created_at->format ('Y-m-d h:i:s')) : null;
+                return $t->id % $count == 0 ? array ('id' => $t->id, 'lat' => $t->lat, 'lng' => $t->lng, 'time' => $t->created_at->format ('Y-m-d H:i:s')) : null;
               else
-                return array ('id' => $t->id, 'lat' => $t->lat, 'lng' => $t->lng, 'time' => $t->created_at->format ('Y-m-d h:i:s'));
+                return array ('id' => $t->id, 'lat' => $t->lat, 'lng' => $t->lng, 'time' => $t->created_at->format ('Y-m-d H:i:s'));
             }, $paths)), 0);
 
     return $this->output_json ($result);
