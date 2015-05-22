@@ -22,7 +22,7 @@ class Main extends Site_controller {
               return $t->id % $count == 0 ? array ('id' => $t->id, 'lat' => $t->lat, 'lng' => $t->lng) : null;
             }, $paths)), 0);
 
-    return $this->output_json ($result, 60 * 5);
+    return $this->output_json ($result);
   }
   public function query () {
     $this->load->helper ('file');
