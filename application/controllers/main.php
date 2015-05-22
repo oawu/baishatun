@@ -20,7 +20,7 @@ class Main extends Site_controller {
       return array ('id' => $t->id, 'lat' => $t->lat, 'lng' => $t->lng);
     }, $paths);
 
-    return $this->output_json ($result);
+    return $this->output_json ($result, 60 * 5);
   }
   public function crontab () {
     $this->load->library ('phpQuery');
@@ -45,6 +45,8 @@ class Main extends Site_controller {
       return ErrorLog::create (array (
           'message' => '重複！'
         ));
+    // else
+      // $this->output->delete_cache ('main/api/0');
   }
   public function index () {
 
