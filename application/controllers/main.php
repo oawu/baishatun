@@ -22,7 +22,7 @@ class Main extends Site_controller {
               return $t->id % $count == 0 ? array ('id' => $t->id, 'lat' => $t->lat, 'lng' => $t->lng) : null;
             }, $paths)), 0);
 
-    return $this->output_json ($result);
+    return $this->output_json ($result, 60 * 5);
   }
   public function query () {
     $this->load->helper ('file');
@@ -30,6 +30,9 @@ class Main extends Site_controller {
     return ErrorLog::create (array (
         'message' => write_file (FCPATH . 'application/logs/query.log', '', FOPEN_READ_WRITE_CREATE_DESTRUCTIVE) ? '清除 query.log 成功！' : '清除 query.log 失敗！'
       ));
+  }
+  public function clean_output () {
+    $this->output->delete_all_cache ();
   }
 
   public function crontab () {
@@ -55,8 +58,6 @@ class Main extends Site_controller {
       return ErrorLog::create (array (
           'message' => '重複！'
         ));
-    // else
-    //   $this->output->delete_all_cache ();
   }
   public function index () {
     return false;
