@@ -15,17 +15,26 @@ class Main extends Site_controller {
     header('Access-Control-Allow-Origin: http://comdan66.github.io');
     // header('Access-Control-Allow-Origin: *');
 
-    $paths = Path::find ('all', array ('conditions' => array ('id > ?', $id)));
     $count = round (Path::count () / 100);
 
-    $result = array_slice (array_filter (array_map (function ($t) use ($id, $count) {
-              if ($id == 0)
-                return $t->id % $count == 0 ? array ('id' => $t->id, 'lat' => $t->lat, 'lng' => $t->lng, 'time' => $t->created_at->format ('Y-m-d H:i:s')) : null;
-              else
-                return array ('id' => $t->id, 'lat' => $t->lat, 'lng' => $t->lng, 'time' => $t->created_at->format ('Y-m-d H:i:s'));
-            }, $paths)), 0);
+    $paths = array_map (function ($path) {
+      return array (
+          'id' => $path->id,
+          'lat' => $path->lat,
+          'lng' => $path->lng,
+          'time' => $path->created_at->format ('Y-m-d H:i:s')
+        );
+    }, $id == 0 ? Path::find_by_sql ("select * from paths where  id > " . $id . " AND mod(id, " . $count . ") = 0;") : Path::find ('all', array ('conditions' => array ('id > ?', $id))));
 
-    return $this->output_json ($result);
+    if (!$id && ($last = Path::last ()) && ($paths[count ($paths) - 1]['id'] != $last->id))
+      array_push ($paths, array (
+          'id' => $last->id,
+          'lat' => $last->lat,
+          'lng' => $last->lng,
+          'time' => $last->created_at->format ('Y-m-d H:i:s')
+        ));
+
+    return $this->output_json ($paths);
   }
   public function query () {
     $this->load->helper ('file');
@@ -65,8 +74,9 @@ class Main extends Site_controller {
   public function index ($code = '') {
     if (md5 ($code) !== '1c63129ae9db9c60c3e8aa94d3e00495')
       return false;
+    $paths = Path::find ('all', array ('order' => 'id DESC', 'limit' => 100, 'conditions' => array ()));
 
-    foreach ($paths = Path::all () as $path) {
+    foreach (array_reverse ($paths) as $path) {
       $this->add_hidden (array ('class' => 'latlng', 'data-id' => $path->id, 'data-lat' => $path->lat, 'data-lng' => $path->lng));
     }
 
