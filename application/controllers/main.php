@@ -74,7 +74,7 @@ class Main extends Site_controller {
   public function index ($code = '') {
     if (md5 ($code) !== '1c63129ae9db9c60c3e8aa94d3e00495')
       return false;
-    $paths = Path::find ('all', array ('order' => 'id DESC', 'limit' => 100, 'conditions' => array ()));
+    $paths = Path::find ('all', array ('order' => 'id DESC', 'limit' => 200, 'conditions' => array ()));
 
     foreach (array_reverse ($paths) as $path) {
       $this->add_hidden (array ('class' => 'latlng', 'data-id' => $path->id, 'data-lat' => $path->lat, 'data-lng' => $path->lng));
