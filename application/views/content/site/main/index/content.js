@@ -60,7 +60,7 @@ $(function () {
           draggable: true,
           position: new google.maps.LatLng (t.lat, t.lng),
           icon: i == latlngs.length - 1 ? '/resource/image/mon.png' : {
-            path: circlePath (10),
+            path: circlePath (7),
             strokeColor: 'rgba(249, 39, 114, 1)',
             strokeWeight: 1,
             fillColor: 'rgba(249, 39, 114, .8)',
