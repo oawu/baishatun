@@ -36,7 +36,7 @@ class Main extends Site_controller {
                   'time_at' => $obj['year'] . '-' . $obj['month'] . '-' . $obj['day'] . ' ' . $obj['hour'] . ':' . $obj['min'] . ':' . '00',
                 ))))
         ErrorLog::create (array (
-            'message' => '[showtaiwan] 重複！'
+            'message' => '[showtaiwan] 重複！lat: ' . $obj['y'] . ', lng' . $obj['x']
           ));
   }
 
