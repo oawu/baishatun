@@ -171,6 +171,7 @@ class Main extends Site_controller {
 
     $this->add_js ('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&language=zh-TW', false)
          ->add_hidden (array ('id' => 'set_position_url', 'value' => base_url ($this->get_class (), 'set_position1')))
+         ->set_method ('index')
          ->load_view (null);
   }
   public function set_position1 () {
@@ -201,6 +202,7 @@ class Main extends Site_controller {
 
     $this->add_js ('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&language=zh-TW', false)
          ->add_hidden (array ('id' => 'set_position_url', 'value' => base_url ($this->get_class (), 'set_position2')))
+         ->set_method ('index')
          ->load_view (null);
   }
   public function set_position2 () {
