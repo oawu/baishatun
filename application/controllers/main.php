@@ -89,6 +89,67 @@ class Main extends Site_controller {
 
     return $this->output_json ($paths);
   }
+
+  public function api2 ($id = 0) {
+    header('Content-type: text/html');
+    header('Access-Control-Allow-Origin: http://comdan66.github.io');
+    // header('Access-Control-Allow-Origin: *');
+
+    $count = round (ShowtaiwanPath::count () / 100);
+
+    $paths = array_map (function ($path) {
+      return array (
+          'id' => $path->id,
+          'lat' => $path->lat,
+          'lng' => $path->lng,
+          'time' => $path->time_at->format ('Y-m-d H:i:s')
+        );
+    }, $id == 0 ? ShowtaiwanPath::find_by_sql ("select * from showtaiwan_paths where  id > " . $id . " AND mod(id, " . $count . ") = 0;") : ShowtaiwanPath::find ('all', array ('conditions' => array ('id > ?', $id))));
+
+    if (!$id && ($last = ShowtaiwanPath::last ()) && ($paths[count ($paths) - 1]['id'] != $last->id))
+      array_push ($paths, array (
+          'id' => $last->id,
+          'lat' => $last->lat,
+          'lng' => $last->lng,
+          'time' => $last->time_at->format ('Y-m-d H:i:s')
+        ));
+
+    return $this->output_json ($paths);
+  }
+  
+  public function merge () {
+    foreach (ShowtaiwanPath::all () as $path)
+      TempPath::create (array (
+                  'lat' => $path->lat,
+                  'lng' => $path->lng,
+                  'address' => $path->address,
+                  'target' => $path->target,
+                  'distance' => $path->distance,
+                  'time_at' => $path->time_at,
+                ));
+    
+    ShowtaiwanPath::query ('TRUNCATE TABLE `showtaiwan_paths`');
+
+    foreach (Path::find ('all', array ('conditions' => array ('id < 1226'))) as $path)
+      ShowtaiwanPath::create (array (
+                  'lat' => $path->lat,
+                  'lng' => $path->lng,
+                  'address' => '',
+                  'target' => '',
+                  'distance' => '',
+                  'time_at' => $path->created_at,
+                ));
+
+    foreach (TempPath::all () as $path)
+      ShowtaiwanPath::create (array (
+                  'lat' => $path->lat,
+                  'lng' => $path->lng,
+                  'address' => $path->address,
+                  'target' => $path->target,
+                  'distance' => $path->distance,
+                  'time_at' => $path->time_at,
+                ));
+  }
   public function query () {
     $this->load->helper ('file');
 

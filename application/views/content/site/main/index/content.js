@@ -69,7 +69,7 @@ $(function () {
         });
 
         google.maps.event.addListener (marker, 'dragend', function (e) {
-          // setPosition (e.position);
+          console.error (t.id);
           setPosition (t.id, e.latLng.lat (), e.latLng.lng ());
 
           polyline.setPath (markers.map (function (i, t) {
