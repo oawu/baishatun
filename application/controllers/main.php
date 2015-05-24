@@ -160,6 +160,9 @@ class Main extends Site_controller {
   public function clean_output () {
     $this->output->delete_all_cache ();
   }
+  public function index () {
+    redirect ('http://comdan66.github.io/matsu/2015/baishatun.html');
+  }
   public function index1 ($code = '', $limit = 0) {
     if (md5 ($code) !== '1c63129ae9db9c60c3e8aa94d3e00495')
       return false;
