@@ -10,6 +10,59 @@ class Main extends Site_controller {
   public function __construct () {
     parent::__construct ();
   }
+  public function showtaiwan ($id = 0) {
+    $url = 'http://showtaiwan.hinet.net/event/201505A/get_current_location.php?_=1432428335943';
+
+    if (!($get_html_str = str_replace ('&amp;', '&', urldecode (file_get_contents ($url)))))
+      return ErrorLog::create (array (
+          'message' => '[showtaiwan] 取不到原始碼！'
+        ));
+
+    $objs = json_decode ($get_html_str, true);
+    if (!$objs)
+      return ErrorLog::create (array (
+          'message' => '[showtaiwan] 沒有陣列！'
+        ));
+
+    foreach ($objs as $obj)
+      if (!verifyCreateOrm ($path = ShowtaiwanPath::create (array (
+                  'lat' => $obj['y'],
+                  'lng' => $obj['x'],
+                  'address' => $obj['addr'],
+                  'target' => $obj['target'],
+                  'distance' => $obj['distance'],
+                  'time_at' => $obj['year'] . '-' . $obj['month'] . '-' . $obj['day'] . ' ' . $obj['hour'] . ':' . $obj['min'] . ':' . '00',
+                ))))
+        ErrorLog::create (array (
+            'message' => '[showtaiwan] 重複！'
+          ));
+  }
+
+  public function crontab () {
+    $this->load->library ('phpQuery');
+    $url = 'http://www.baishatun.com.tw/gps/';
+
+    if (!($get_html_str = str_replace ('&amp;', '&', urldecode (file_get_contents ($url)))))
+      return ErrorLog::create (array (
+          'message' => '取不到原始碼！'
+        ));
+
+    preg_match_all ('/addMarker\s*\((?P<lat>.*)\s*,\s*(?P<lng>.*)\);/', $get_html_str, $result);
+
+    if (!($result['lat'] && $result['lng']&& $result['lat'][0] && $result['lng'][0]))
+      return ErrorLog::create (array (
+          'message' => '網頁內容有誤！'
+        ));
+
+    if (!verifyCreateOrm ($path = Path::create (array (
+                'lat' => $result['lat'][0],
+                'lng' => $result['lng'][0],
+              ))))
+      return ErrorLog::create (array (
+          'message' => '重複！'
+        ));
+  }
+
   public function api ($id = 0) {
     header('Content-type: text/html');
     header('Access-Control-Allow-Origin: http://comdan66.github.io');
@@ -45,31 +98,6 @@ class Main extends Site_controller {
   }
   public function clean_output () {
     $this->output->delete_all_cache ();
-  }
-
-  public function crontab () {
-    $this->load->library ('phpQuery');
-    $url = 'http://www.baishatun.com.tw/gps/';
-
-    if (!($get_html_str = str_replace ('&amp;', '&', urldecode (file_get_contents ($url)))))
-      return ErrorLog::create (array (
-          'message' => '取不到原始碼！'
-        ));
-
-    preg_match_all ('/addMarker\s*\((?P<lat>.*)\s*,\s*(?P<lng>.*)\);/', $get_html_str, $result);
-
-    if (!($result['lat'] && $result['lng']&& $result['lat'][0] && $result['lng'][0]))
-      return ErrorLog::create (array (
-          'message' => '網頁內容有誤！'
-        ));
-
-    if (!verifyCreateOrm ($path = Path::create (array (
-                'lat' => $result['lat'][0],
-                'lng' => $result['lng'][0],
-              ))))
-      return ErrorLog::create (array (
-          'message' => '重複！'
-        ));
   }
   public function index ($code = '') {
     if (md5 ($code) !== '1c63129ae9db9c60c3e8aa94d3e00495')
