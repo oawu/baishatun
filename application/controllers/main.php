@@ -28,6 +28,8 @@ class Main extends Site_controller {
       if (!verifyCreateOrm ($path = ShowtaiwanPath::create (array (
                   'lat' => $obj['y'],
                   'lng' => $obj['x'],
+                  'lat2' => '',
+                  'lng2' => '',
                   'address' => $obj['addr'],
                   'target' => $obj['target'],
                   'distance' => $obj['distance'],
@@ -90,32 +92,6 @@ class Main extends Site_controller {
     return $this->output_json ($paths);
   }
 
-  public function api2 ($id = 0) {
-    header('Content-type: text/html');
-    header('Access-Control-Allow-Origin: http://comdan66.github.io');
-    // header('Access-Control-Allow-Origin: *');
-
-    $count = round (ShowtaiwanPath::count () / 150);
-
-    $paths = array_map (function ($path) {
-      return array (
-          'id' => $path->id,
-          'lat' => $path->lat,
-          'lng' => $path->lng,
-          'time' => $path->time_at->format ('Y-m-d H:i:s')
-        );
-    }, $id == 0 ? ShowtaiwanPath::find_by_sql ("select * from showtaiwan_paths where  id > " . $id . " AND mod(id, " . $count . ") = 0;") : ShowtaiwanPath::find ('all', array ('conditions' => array ('id > ?', $id))));
-
-    if (!$id && ($last = ShowtaiwanPath::last ()) && ($paths[count ($paths) - 1]['id'] != $last->id))
-      array_push ($paths, array (
-          'id' => $last->id,
-          'lat' => $last->lat,
-          'lng' => $last->lng,
-          'time' => $last->time_at->format ('Y-m-d H:i:s')
-        ));
-
-    return $this->output_json ($paths);
-  }
   
   public function merge () {
     foreach (ShowtaiwanPath::all () as $path)
@@ -200,7 +176,7 @@ class Main extends Site_controller {
     $paths = ShowtaiwanPath::find ('all', array ('order' => 'id DESC', 'limit' => $limit, 'conditions' => array ()));
 
     foreach (array_reverse ($paths) as $path) {
-      $this->add_hidden (array ('class' => 'latlng', 'data-id' => $path->id, 'data-lat' => $path->lat, 'data-lng' => $path->lng));
+      $this->add_hidden (array ('class' => 'latlng', 'data-id' => $path->id, 'data-lat' => isset ($path->lat2) && ($path->lat2 != '') ? $path->lat2 : $path->lat, 'data-lng' => isset ($path->lng2) && ($path->lng2 != '') ? $path->lng2 : $path->lng));
     }
 
     $this->add_js ('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&language=zh-TW', false)
@@ -219,10 +195,37 @@ class Main extends Site_controller {
     if (!($id && $lat && $lng && ($path = ShowtaiwanPath::find_by_id ($id))))
       return $this->output_json (array ('status' => false));
 
-    $path->lat = $lat;
-    $path->lng = $lng;
+    $path->lat2 = $lat;
+    $path->lng2 = $lng;
     $path->save ();
 
     return $this->output_json (array ('status' => true));
+  }
+  public function api2 ($id = 0) {
+    header('Content-type: text/html');
+    header('Access-Control-Allow-Origin: http://comdan66.github.io');
+    // header('Access-Control-Allow-Origin: *');
+
+    $count = round (ShowtaiwanPath::count () / 150);
+
+    $paths = array_map (function ($path) {
+
+      return array (
+          'id' => $path->id,
+          'lat' => isset ($path->lat2) && ($path->lat2 != '') ? $path->lat2 : $path->lat,
+          'lng' => isset ($path->lng2) && ($path->lng2 != '') ? $path->lng2 : $path->lng,
+          'time' => $path->time_at->format ('Y-m-d H:i:s')
+        );
+    }, $id == 0 ? ShowtaiwanPath::find_by_sql ("select * from showtaiwan_paths where  id > " . $id . " AND mod(id, " . $count . ") = 0;") : ShowtaiwanPath::find ('all', array ('conditions' => array ('id > ?', $id))));
+
+    if (!$id && ($last = ShowtaiwanPath::last ()) && ($paths[count ($paths) - 1]['id'] != $last->id))
+      array_push ($paths, array (
+          'id' => $last->id,
+          'lat' => isset ($last->lat2) && ($last->lat2 != '') ? $last->lat2 : $last->lat,
+          'lng' => isset ($last->lng2) && ($last->lng2 != '') ? $last->lng2 : $last->lng,
+          'time' => $last->time_at->format ('Y-m-d H:i:s')
+        ));
+
+    return $this->output_json ($paths);
   }
 }
