@@ -11,7 +11,7 @@ class Main extends Site_controller {
     parent::__construct ();
   }
   public function showtaiwan ($id = 0) {
-    $url = 'http://showtaiwan.hinet.net/event/201505A/get_current_location.php?_=1432428335943';
+    $url = 'http://showtaiwan.hinet.net/event/201505A/links/data/get_current_location.php';
 
     if (!($get_html_str = str_replace ('&amp;', '&', urldecode (file_get_contents ($url)))))
       return ErrorLog::create (array (
