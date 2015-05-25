@@ -10,20 +10,59 @@ class Main extends Site_controller {
   public function __construct () {
     parent::__construct ();
   }
-  public function showtaiwan ($id = 0) {
+
+  private function s1 () {
+    $url = 'http://showtaiwan.hinet.net/event/201505A/get_current_location.php?_=1432428335943';
+
+    if (!($get_html_str = str_replace ('&amp;', '&', urldecode (file_get_contents ($url))))) {
+      ErrorLog::create (array (
+          'message' => '[showtaiwan1] 取不到原始碼！'
+        ));
+      return false;
+    }
+
+    $objs = json_decode ($get_html_str, true);
+    if (!$objs) {
+      ErrorLog::create (array (
+          'message' => '[showtaiwan1] 沒有陣列！'
+        ));
+      return false;
+    }
+
+    foreach ($objs as $obj)
+      if (!verifyCreateOrm ($path = ShowtaiwanPath::create (array (
+                  'lat' => $obj['y'],
+                  'lng' => $obj['x'],
+                  'lat2' => '',
+                  'lng2' => '',
+                  'address' => $obj['addr'],
+                  'target' => $obj['target'],
+                  'distance' => $obj['distance'],
+                  'time_at' => $obj['year'] . '-' . $obj['month'] . '-' . $obj['day'] . ' ' . $obj['hour'] . ':' . $obj['min'] . ':' . '00',
+                ))))
+        ErrorLog::create (array (
+            'message' => '[showtaiwan1] 重複！'
+          ));
+
+    return true;
+  }
+  private function s2 () {
     $url = 'http://showtaiwan.hinet.net/event/201505A/links/data/get_current_location.php';
 
-    if (!($get_html_str = str_replace ('&amp;', '&', urldecode (file_get_contents ($url)))))
-      return ErrorLog::create (array (
-          'message' => '[showtaiwan] 取不到原始碼！'
+    if (!($get_html_str = str_replace ('&amp;', '&', urldecode (file_get_contents ($url))))) {
+      ErrorLog::create (array (
+          'message' => '[showtaiwan2] 取不到原始碼！'
         ));
+      return false;
+    }
 
     $obj = json_decode ($get_html_str, true);
-    if (!$obj)
-      return ErrorLog::create (array (
-          'message' => '[showtaiwan] 沒有陣列！'
+    if (!$obj) {
+      ErrorLog::create (array (
+          'message' => '[showtaiwan2] 沒有陣列！'
         ));
-
+      return false;
+    }
     if (!verifyCreateOrm ($path = ShowtaiwanPath::create (array (
                 'lat' => $obj['y'],
                 'lng' => $obj['x'],
@@ -32,11 +71,20 @@ class Main extends Site_controller {
                 'address' => $obj['addr'],
                 'target' => $obj['target'],
                 'distance' => $obj['distance'],
-                'time_at' => '2015'. '-' . $obj['month'] . '-' . $obj['day'] . ' ' . $obj['hour'] . ':' . $obj['min'] . ':' . '00',
+                'time_at' => '2015' . '-' . $obj['month'] . '-' . $obj['day'] . ' ' . $obj['hour'] . ':' . $obj['min'] . ':' . '00',
               ))))
       ErrorLog::create (array (
-          'message' => '[showtaiwan] 重複！'
+          'message' => '[showtaiwan2] 重複！'
         ));
+
+    return true;
+  }
+  public function showtaiwan ($id = 0) {
+    if (!$this->s1 ())
+      if (!$this->s2 ())
+        ErrorLog::create (array (
+            'message' => '[showtaiwan] 緊急錯誤！'
+          ));
   }
 
   public function crontab () {
