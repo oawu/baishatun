@@ -107,8 +107,8 @@ class Main extends Site_controller {
     if (!verifyCreateOrm ($path = Path::create (array (
                 'lat' => $result['lat'][0],
                 'lng' => $result['lng'][0],
-                'lat2' => $result['lat'][0] + ('0.00' . rand (0, 3) . rand (0, 100)),
-                'lng2' => $result['lng'][0] + ('0.00' . rand (0, 3) . rand (0, 100)),
+                'lat2' => $result['lat'][0] + ('0.00' . rand (0, 9) . rand (0, 100)),
+                'lng2' => $result['lng'][0] + ('0.00' . rand (0, 9) . rand (0, 100)),
               ))))
       return ErrorLog::create (array (
           'message' => '重複！'
@@ -190,8 +190,8 @@ class Main extends Site_controller {
     redirect ('http://comdan66.github.io/matsu/2015/baishatun.html');
   }
   public function index1 ($code = '', $limit = 0) {
-    if (md5 ($code) !== '1c63129ae9db9c60c3e8aa94d3e00495')
-      return false;
+    if (md5 ($code) !== '9056749f0dde456780a336ea05640d0a')
+      redirect ('http://comdan66.github.io/matsu/2015/baishatun.html');
     $paths = Path::find ('all', array ('order' => 'id DESC', 'limit' => $limit, 'conditions' => array ()));
 
     foreach (array_reverse ($paths) as $path) {
@@ -221,8 +221,8 @@ class Main extends Site_controller {
     return $this->output_json (array ('status' => true));
   }
   public function index2 ($code = '', $limit = 0) {
-    if (md5 ($code) !== '1c63129ae9db9c60c3e8aa94d3e00495')
-      return false;
+    if (md5 ($code) !== '9056749f0dde456780a336ea05640d0a')
+      redirect ('http://comdan66.github.io/matsu/2015/baishatun.html');
     $paths = ShowtaiwanPath::find ('all', array ('order' => 'id DESC', 'limit' => $limit, 'conditions' => array ()));
 
     foreach (array_reverse ($paths) as $path) {
