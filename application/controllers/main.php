@@ -250,13 +250,13 @@ class Main extends Site_controller {
   }
   public function api2 ($id = 0) {
     header ('Content-type: text/html');
-    // header ('Access-Control-Allow-Origin: http://comdan66.github.io');
-    header ('Access-Control-Allow-Origin: *');
+    header ('Access-Control-Allow-Origin: http://comdan66.github.io');
+    // header ('Access-Control-Allow-Origin: *');
 
 
     if ($id == 0) {
-      $all_count = 100;
-      $now_count = 70;
+      $all_count = 150;
+      $now_count = 95;
       $pre_count = $all_count - $now_count;
 
       $now_point = 300;
@@ -266,23 +266,15 @@ class Main extends Site_controller {
       $count = round ($now_point / $now_count);
       $nows = array_reverse (ShowtaiwanPath::find ('all', array ('order' => 'id DESC', 'conditions' => array ('id > ? AND mod(id, ' . $count . ') = 0', $now->id))));
 
-echo '<meta http-equiv="Content-type" content="text/html; charset=utf-8" /><pre>';
-var_dump ( array_map(function ($t) {return $t->id;}, $nows));
-exit ();
-
       $pre_point = ShowtaiwanPath::count () - 300;
       $count = round ($pre_point / $pre_count);
       $pres = ShowtaiwanPath::find ('all', array ('order' => 'id ASC', 'conditions' => array ('id < ? AND mod(id, ' . $count . ') = 0', $now->id)));
 
-      $paths = array_merge ($nows, $pres);
+      $paths = array_merge ($pres, $nows);
+
     } else {
       $paths = ShowtaiwanPath::find ('all', array ('conditions' => array ('id > ?', $id)));
     }
-
-
-
-
-    // $count = round (ShowtaiwanPath::count () / 200);
 
     $paths = array_map (function ($path) {
 
