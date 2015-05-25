@@ -114,8 +114,8 @@ class Main extends Site_controller {
 
   public function api ($id = 0) {
     header ('Content-type: text/html');
-    // header ('Access-Control-Allow-Origin: http://comdan66.github.io');
-    header ('Access-Control-Allow-Origin: *');
+    header ('Access-Control-Allow-Origin: http://comdan66.github.io');
+    // header ('Access-Control-Allow-Origin: *');
 
     $count = round (Path::count () / 200);
 
@@ -253,7 +253,28 @@ class Main extends Site_controller {
     header ('Access-Control-Allow-Origin: http://comdan66.github.io');
     // header ('Access-Control-Allow-Origin: *');
 
-    $count = round (ShowtaiwanPath::count () / 200);
+
+    if ($id == 0) {
+      $all_count = 150;
+      $now_count = 95;
+      $pre_count = $all_count - $now_count;
+
+      $now_point = 300;
+      $now = ShowtaiwanPath::find ('all', array ('limit' => $now_point, 'order' => 'id DESC', 'conditions' => array ()));
+      $now = $now[count ($now) - 1];
+
+      $count = round ($now_point / $now_count);
+      $nows = array_reverse (ShowtaiwanPath::find ('all', array ('order' => 'id DESC', 'conditions' => array ('id > ? AND mod(id, ' . $count . ') = 0', $now->id))));
+
+      $pre_point = ShowtaiwanPath::count () - 300;
+      $count = round ($pre_point / $pre_count);
+      $pres = ShowtaiwanPath::find ('all', array ('order' => 'id ASC', 'conditions' => array ('id < ? AND mod(id, ' . $count . ') = 0', $now->id)));
+
+      $paths = array_merge ($pres, $nows);
+
+    } else {
+      $paths = ShowtaiwanPath::find ('all', array ('conditions' => array ('id > ?', $id)));
+    }
 
     $paths = array_map (function ($path) {
 
@@ -263,7 +284,7 @@ class Main extends Site_controller {
           'lng' => isset ($path->lng2) && ($path->lng2 != '') ? $path->lng2 : $path->lng,
           'time' => $path->time_at->format ('Y-m-d H:i:s')
         );
-    }, $id == 0 ? ShowtaiwanPath::find_by_sql ("select * from showtaiwan_paths where  id > " . $id . " AND mod(id, " . $count . ") = 0;") : ShowtaiwanPath::find ('all', array ('conditions' => array ('id > ?', $id))));
+    }, $paths);
 
     if (!$id && ($last = ShowtaiwanPath::last ()) && ($paths[count ($paths) - 1]['id'] != $last->id))
       array_push ($paths, array (
