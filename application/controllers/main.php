@@ -107,8 +107,8 @@ class Main extends Site_controller {
     if (!verifyCreateOrm ($path = Path::create (array (
                 'lat' => $result['lat'][0],
                 'lng' => $result['lng'][0],
-                'lat2' => $result['lat'][0] + ('0.000' . rand (0, 100)),
-                'lng2' => $result['lng'][0] + ('0.000' . rand (0, 100)),
+                'lat2' => $result['lat'][0] + ('0.00' . rand (0, 3) . rand (0, 100)),
+                'lng2' => $result['lng'][0] + ('0.00' . rand (0, 3) . rand (0, 100)),
               ))))
       return ErrorLog::create (array (
           'message' => '重複！'
