@@ -20,13 +20,13 @@ class Tool_cell extends Cell_Controller {
         array_push ($ids, $last->id - $id);
 
       $ids = array_reverse ($ids);
-      $paths = ShowtaiwanPath::find ('all', array ('select' => 'id, lat, lng, time_at', 'order' => 'FIELD(id, ' . implode (', ', $ids) . ')', 'conditions' => array ('id IN (?)', $ids)));
+      $paths = ShowtaiwanPath::find ('all', array ('select' => 'id, lat, lng, lat2, lng2, time_at', 'order' => 'FIELD(id, ' . implode (', ', $ids) . ')', 'conditions' => array ('id IN (?)', $ids)));
 
       if(isset ($paths[count ($paths) - 1]) && ($paths[count ($paths) - 1]->id != $last->id))
         array_push ($paths, $last);
 
     } else {
-      $paths = ShowtaiwanPath::find ('all', array ('select' => 'id, lat, lng, time_at', 'conditions' => array ('id > ?', $id)));
+      $paths = ShowtaiwanPath::find ('all', array ('select' => 'id, lat, lng, lat2, lng2, time_at', 'conditions' => array ('id > ?', $id)));
     }
 
     $paths = array_map (function ($path) {
