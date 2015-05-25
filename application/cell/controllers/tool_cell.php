@@ -9,7 +9,7 @@ class Tool_cell extends Cell_Controller {
 
   /* render_cell ('tool_cell', 'api2', $id); */
   public function _cache_api2 ($id) {
-    return array ('time' => 60 * 60, 'key' => $id);
+    return array ('time' => 60 * 10, 'key' => $id);
   }
   public function api2 ($id) {
     if ($id == 0) {
