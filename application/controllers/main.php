@@ -33,7 +33,7 @@ class Main extends Site_controller {
                   'address' => $obj['addr'],
                   'target' => $obj['target'],
                   'distance' => $obj['distance'],
-                  'time_at' => $obj['year'] . '-' . $obj['month'] . '-' . $obj['day'] . ' ' . $obj['hour'] . ':' . $obj['min'] . ':' . '00',
+                  'time_at' => '2015'. '-' . $obj['month'] . '-' . $obj['day'] . ' ' . $obj['hour'] . ':' . $obj['min'] . ':' . '00',
                 ))))
         ErrorLog::create (array (
             'message' => '[showtaiwan] 重複！'
