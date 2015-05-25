@@ -66,9 +66,9 @@ class Main extends Site_controller {
   }
 
   public function api ($id = 0) {
-    header('Content-type: text/html');
-    header('Access-Control-Allow-Origin: http://comdan66.github.io');
-    // header('Access-Control-Allow-Origin: *');
+    header ('Content-type: text/html');
+    // header ('Access-Control-Allow-Origin: http://comdan66.github.io');
+    header ('Access-Control-Allow-Origin: *');
 
     $count = round (Path::count () / 100);
 
@@ -92,7 +92,7 @@ class Main extends Site_controller {
     return $this->output_json ($paths);
   }
 
-  
+
   public function merge () {
     foreach (ShowtaiwanPath::all () as $path)
       TempPath::create (array (
@@ -103,7 +103,7 @@ class Main extends Site_controller {
                   'distance' => $path->distance,
                   'time_at' => $path->time_at,
                 ));
-    
+
     ShowtaiwanPath::query ('TRUNCATE TABLE `showtaiwan_paths`');
 
     foreach (Path::find ('all', array ('conditions' => array ('id < 1226'))) as $path)
@@ -156,7 +156,7 @@ class Main extends Site_controller {
   public function set_position1 () {
     if (!$this->is_ajax ())
       return show_error ("It's not Ajax request!<br/>Please confirm your program again.");
-    
+
     $id = $this->input_post ('id');
     $lat = $this->input_post ('lat');
     $lng = $this->input_post ('lng');
@@ -187,7 +187,7 @@ class Main extends Site_controller {
   public function set_position2 () {
     if (!$this->is_ajax ())
       return show_error ("It's not Ajax request!<br/>Please confirm your program again.");
-    
+
     $id = $this->input_post ('id');
     $lat = $this->input_post ('lat');
     $lng = $this->input_post ('lng');
@@ -202,9 +202,9 @@ class Main extends Site_controller {
     return $this->output_json (array ('status' => true));
   }
   public function api2 ($id = 0) {
-    header('Content-type: text/html');
-    header('Access-Control-Allow-Origin: http://comdan66.github.io');
-    // header('Access-Control-Allow-Origin: *');
+    header ('Content-type: text/html');
+    header ('Access-Control-Allow-Origin: http://comdan66.github.io');
+    // header ('Access-Control-Allow-Origin: *');
 
     $count = round (ShowtaiwanPath::count () / 150);
 
