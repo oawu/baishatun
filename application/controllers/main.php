@@ -85,6 +85,7 @@ class Main extends Site_controller {
         ErrorLog::create (array (
             'message' => '[showtaiwan] 緊急錯誤！'
           ));
+    clean_cell ('*');
   }
 
   public function crontab () {
