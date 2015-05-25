@@ -117,7 +117,7 @@ class Main extends Site_controller {
     // header ('Access-Control-Allow-Origin: http://comdan66.github.io');
     header ('Access-Control-Allow-Origin: *');
 
-    $count = round (Path::count () / 100);
+    $count = round (Path::count () / 200);
 
     $paths = array_map (function ($path) {
       return array (
@@ -253,7 +253,7 @@ class Main extends Site_controller {
     header ('Access-Control-Allow-Origin: http://comdan66.github.io');
     // header ('Access-Control-Allow-Origin: *');
 
-    $count = round (ShowtaiwanPath::count () / 150);
+    $count = round (ShowtaiwanPath::count () / 200);
 
     $paths = array_map (function ($path) {
 
