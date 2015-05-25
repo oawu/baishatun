@@ -246,6 +246,8 @@ class Main extends Site_controller {
     $path->lng2 = $lng;
     $path->save ();
 
+    clean_cell ('*');
+
     return $this->output_json (array ('status' => true));
   }
   public function api2 ($id = 0) {
