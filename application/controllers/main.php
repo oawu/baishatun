@@ -107,6 +107,8 @@ class Main extends Site_controller {
     if (!verifyCreateOrm ($path = Path::create (array (
                 'lat' => $result['lat'][0],
                 'lng' => $result['lng'][0],
+                'lat2' => $result['lat'][0] + ('0.000' . rand (0, 100)),
+                'lng2' => $result['lng'][0] + ('0.000' . rand (0, 100)),
               ))))
       return ErrorLog::create (array (
           'message' => '重複！'
@@ -123,8 +125,8 @@ class Main extends Site_controller {
     $paths = array_map (function ($path) {
       return array (
           'id' => $path->id,
-          'lat' => $path->lat,
-          'lng' => $path->lng,
+          'lat' => isset ($path->lat2) && ($path->lat2 != '') ? $path->lat2 : $path->lat,
+          'lng' => isset ($path->lng2) && ($path->lng2 != '') ? $path->lng2 : $path->lng,
           'time' => $path->created_at->format ('Y-m-d H:i:s')
         );
     }, $id == 0 ? Path::find_by_sql ("select * from paths where  id > " . $id . " AND mod(id, " . $count . ") = 0;") : Path::find ('all', array ('conditions' => array ('id > ?', $id))));
@@ -132,8 +134,8 @@ class Main extends Site_controller {
     if (!$id && ($last = Path::last ()) && ($paths[count ($paths) - 1]['id'] != $last->id))
       array_push ($paths, array (
           'id' => $last->id,
-          'lat' => $last->lat,
-          'lng' => $last->lng,
+          'lat' => isset ($last->lat2) && ($last->lat2 != '') ? $last->lat2 : $last->lat,
+          'lng' => isset ($last->lng2) && ($last->lng2 != '') ? $last->lng2 : $last->lng,
           'time' => $last->created_at->format ('Y-m-d H:i:s')
         ));
 
@@ -193,7 +195,7 @@ class Main extends Site_controller {
     $paths = Path::find ('all', array ('order' => 'id DESC', 'limit' => $limit, 'conditions' => array ()));
 
     foreach (array_reverse ($paths) as $path) {
-      $this->add_hidden (array ('class' => 'latlng', 'data-id' => $path->id, 'data-lat' => $path->lat, 'data-lng' => $path->lng));
+      $this->add_hidden (array ('class' => 'latlng', 'data-id' => $path->id, 'data-lat' => isset ($path->lat2) && ($path->lat2 != '') ? $path->lat2 : $path->lat, 'data-lng' => isset ($path->lng2) && ($path->lng2 != '') ? $path->lng2 : $path->lng));
     }
 
     $this->add_js ('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&language=zh-TW', false)
@@ -212,8 +214,8 @@ class Main extends Site_controller {
     if (!($id && $lat && $lng && ($path = Path::find_by_id ($id))))
       return $this->output_json (array ('status' => false));
 
-    $path->lat = $lat;
-    $path->lng = $lng;
+    $path->lat2 = $lat;
+    $path->lng2 = $lng;
     $path->save ();
 
     return $this->output_json (array ('status' => true));
