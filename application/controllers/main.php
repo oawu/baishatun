@@ -82,7 +82,7 @@ class Main extends Site_controller {
   public function showtaiwan ($id = 0) {
     if (!$this->s1 ())
       if (!$this->s2 ())
-        ErrorLog::create (array (
+        return ErrorLog::create (array (
             'message' => '[showtaiwan] 緊急錯誤！'
           ));
     clean_cell ('*');
