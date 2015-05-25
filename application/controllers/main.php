@@ -33,8 +33,8 @@ class Main extends Site_controller {
       if (!verifyCreateOrm ($path = ShowtaiwanPath::create (array (
                   'lat' => $obj['y'],
                   'lng' => $obj['x'],
-                  'lat2' => $obj['y'] + ('0.000' . rand (0, 100)),
-                  'lng2' => $obj['x'] + ('0.000' . rand (0, 100)),
+                  'lat2' => $obj['y'] + (rand (-29999, 29999) * 0.00000001),
+                  'lng2' => $obj['x'] + (rand (-29999, 29999) * 0.00000001),
                   'address' => $obj['addr'],
                   'target' => $obj['target'],
                   'distance' => $obj['distance'],
@@ -66,8 +66,8 @@ class Main extends Site_controller {
     if (!verifyCreateOrm ($path = ShowtaiwanPath::create (array (
                 'lat' => $obj['y'],
                 'lng' => $obj['x'],
-                'lat2' => $obj['y'] + ('0.000' . rand (0, 100)),
-                'lng2' => $obj['x'] + ('0.000' . rand (0, 100)),
+                'lat2' => $obj['y'] + (rand (-29999, 29999) * 0.00000001),
+                'lng2' => $obj['x'] + (rand (-29999, 29999) * 0.00000001),
                 'address' => $obj['addr'],
                 'target' => $obj['target'],
                 'distance' => $obj['distance'],
@@ -103,12 +103,11 @@ class Main extends Site_controller {
       return ErrorLog::create (array (
           'message' => '網頁內容有誤！'
         ));
-
     if (!verifyCreateOrm ($path = Path::create (array (
                 'lat' => $result['lat'][0],
                 'lng' => $result['lng'][0],
-                'lat2' => $result['lat'][0] + ('0.00' . rand (0, 3) . rand (0, 100)),
-                'lng2' => $result['lng'][0] + ('0.00' . rand (0, 3) . rand (0, 100)),
+                'lat2' => $result['lat'][0] + (rand (-39999, 39999) * 0.000001),
+                'lng2' => $result['lng'][0] + (rand (-39999, 39999) * 0.000001),
               ))))
       return ErrorLog::create (array (
           'message' => '重複！'
