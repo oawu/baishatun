@@ -33,8 +33,8 @@ class Main extends Site_controller {
       if (!verifyCreateOrm ($path = ShowtaiwanPath::create (array (
                   'lat' => $obj['y'],
                   'lng' => $obj['x'],
-                  'lat2' => '',
-                  'lng2' => '',
+                  'lat2' => $obj['y'] + ('0.000' . rand (0, 100)),
+                  'lng2' => $obj['x'] + ('0.000' . rand (0, 100)),
                   'address' => $obj['addr'],
                   'target' => $obj['target'],
                   'distance' => $obj['distance'],
@@ -66,8 +66,8 @@ class Main extends Site_controller {
     if (!verifyCreateOrm ($path = ShowtaiwanPath::create (array (
                 'lat' => $obj['y'],
                 'lng' => $obj['x'],
-                'lat2' => '',
-                'lng2' => '',
+                'lat2' => $obj['y'] + ('0.000' . rand (0, 100)),
+                'lng2' => $obj['x'] + ('0.000' . rand (0, 100)),
                 'address' => $obj['addr'],
                 'target' => $obj['target'],
                 'distance' => $obj['distance'],
@@ -252,7 +252,6 @@ class Main extends Site_controller {
     header ('Content-type: text/html');
     header ('Access-Control-Allow-Origin: http://comdan66.github.io');
     // header ('Access-Control-Allow-Origin: *');
-
 
     if ($id == 0) {
       $all_count = 150;
