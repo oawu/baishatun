@@ -12,45 +12,32 @@ class Tool_cell extends Cell_Controller {
     return array ('time' => 60 * 10, 'key' => $id);
   }
   public function api2 ($id) {
+
     if ($id == 0) {
-      $all_count = 150;
-      $now_count = 95;
-      $pre_count = $all_count - $now_count;
+      $last = ShowtaiwanPath::last ();
+      $paths = array ();
 
-      $now_point = 300;
-      $now = ShowtaiwanPath::find ('all', array ('limit' => $now_point, 'order' => 'id DESC', 'conditions' => array ()));
-      $now = $now[count ($now) - 1];
+      for ($i = 0; ($id = round (($i * (2 + ($i - 1) * 0.2)) / 2)) < $last->id; $i++)
+        if ($path = ShowtaiwanPath::find ('one', array ('select' => 'id, lat, lng, time_at', 'conditions' => array ('id = ?', $last->id - $id))))
+          array_push ($paths, $path);
 
-      $count = round ($now_point / $now_count);
-      $nows = array_reverse (ShowtaiwanPath::find ('all', array ('order' => 'id DESC', 'conditions' => array ('id > ? AND mod(id, ' . $count . ') = 0', $now->id))));
+      $paths = array_reverse ($paths);
 
-      $pre_point = ShowtaiwanPath::count () - 300;
-      $count = round ($pre_point / $pre_count);
-      $pres = ShowtaiwanPath::find ('all', array ('order' => 'id ASC', 'conditions' => array ('id < ? AND mod(id, ' . $count . ') = 0', $now->id)));
-
-      $paths = array_merge ($pres, $nows);
-
+      if(isset ($paths[count ($paths) - 1]) && ($paths[count ($paths) - 1]->id != $last->id))
+        array_push ($paths, $last);
     } else {
-      $paths = ShowtaiwanPath::find ('all', array ('conditions' => array ('id > ?', $id)));
+      $paths = ShowtaiwanPath::find ('all', array ('select' => 'id, lat, lng, time_at', 'conditions' => array ('id > ?', $id)));
     }
 
     $paths = array_map (function ($path) {
-
-    return array (
-          'id' => $path->id,
-          'lat' => isset ($path->lat2) && ($path->lat2 != '') ? $path->lat2 : $path->lat,
-          'lng' => isset ($path->lng2) && ($path->lng2 != '') ? $path->lng2 : $path->lng,
-          'time' => $path->time_at->format ('Y-m-d H:i:s')
-        );
+      return array (
+            'id' => $path->id,
+            'lat' => isset ($path->lat2) && ($path->lat2 != '') ? $path->lat2 : $path->lat,
+            'lng' => isset ($path->lng2) && ($path->lng2 != '') ? $path->lng2 : $path->lng,
+            'time' => $path->time_at->format ('Y-m-d H:i:s')
+          );
     }, $paths);
 
-    if (!$id && ($last = ShowtaiwanPath::last ()) && ($paths[count ($paths) - 1]['id'] != $last->id))
-      array_push ($paths, array (
-          'id' => $last->id,
-          'lat' => isset ($last->lat2) && ($last->lat2 != '') ? $last->lat2 : $last->lat,
-          'lng' => isset ($last->lng2) && ($last->lng2 != '') ? $last->lng2 : $last->lng,
-          'time' => $last->time_at->format ('Y-m-d H:i:s')
-        ));
     return $paths;
   }
 }
