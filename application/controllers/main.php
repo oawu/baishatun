@@ -266,4 +266,28 @@ class Main extends Site_controller {
   public function clean_cell () {
     clean_cell ('*');
   }
+
+  public function x () {
+    // http://175.99.76.212/Vehicle/GMapCarMazu
+
+    $url = 'http://175.99.76.212/Vehicle/GMapCarMazu';
+
+    $options = array (
+      CURLOPT_URL => $url, CURLOPT_POST => true,
+      CURLOPT_POSTFIELDS => '{ajaxvalues: "BSTTV,353358015273399"}',//http_build_query (array ('ajaxvalues' => 'BSTTV,353358015273399')),
+      CURLOPT_TIMEOUT => 120, CURLOPT_HEADER => false, CURLOPT_MAXREDIRS => 10,
+      CURLOPT_AUTOREFERER => true, CURLOPT_CONNECTTIMEOUT => 30, CURLOPT_RETURNTRANSFER => true, CURLOPT_FOLLOWLOCATION => true,
+      CURLOPT_USERAGENT => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36",
+      CURLOPT_HTTPHEADER => array("X-Requested-With: XMLHttpRequest", "Content-Type:application/x-www-form-urlencoded")
+    );
+
+    $ch = curl_init ($url);
+    curl_setopt_array ($ch, $options);
+    $data = curl_exec ($ch);
+    curl_close ($ch);
+
+    echo '<meta http-equiv="Content-type" content="text/html; charset=utf-8" /><pre>';
+    var_dump ($data);
+    exit ();
+  }
 }
