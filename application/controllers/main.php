@@ -115,32 +115,32 @@ class Main extends Site_controller {
   }
 
   public function api ($id = 0) {
-    // header ('Content-type: text/html');
-    // header ('Access-Control-Allow-Origin: http://comdan66.github.io');
+    header ('Content-type: text/html');
+    header ('Access-Control-Allow-Origin: http://comdan66.github.io');
     // header ('Access-Control-Allow-Origin: *');
 
-    // $count = round (Path::count () / 200);
+    $count = round (Path::count () / 200);
 
-    // $paths = array_map (function ($path) {
-    //   return array (
-    //       'id' => $path->id,
-    //       'lat' => isset ($path->lat2) && ($path->lat2 != '') ? $path->lat2 : $path->lat,
-    //       'lng' => isset ($path->lng2) && ($path->lng2 != '') ? $path->lng2 : $path->lng,
-    //       'time' => $path->created_at->format ('Y-m-d H:i:s')
-    //     );
-    // }, $id == 0 ? Path::find_by_sql ("select * from paths where  id > " . $id . " AND mod(id, " . $count . ") = 0;") : Path::find ('all', array ('conditions' => array ('id > ?', $id))));
+    $paths = array_map (function ($path) {
+      return array (
+          'id' => $path->id,
+          'lat' => isset ($path->lat2) && ($path->lat2 != '') ? $path->lat2 : $path->lat,
+          'lng' => isset ($path->lng2) && ($path->lng2 != '') ? $path->lng2 : $path->lng,
+          'time' => $path->created_at->format ('Y-m-d H:i:s')
+        );
+    }, $id == 0 ? Path::find_by_sql ("select * from paths where  id > " . $id . " AND mod(id, " . $count . ") = 0;") : Path::find ('all', array ('conditions' => array ('id > ?', $id))));
 
-    // if (!$id && ($last = Path::last ()) && ($paths[count ($paths) - 1]['id'] != $last->id))
-    //   array_push ($paths, array (
-    //       'id' => $last->id,
-    //       'lat' => isset ($last->lat2) && ($last->lat2 != '') ? $last->lat2 : $last->lat,
-    //       'lng' => isset ($last->lng2) && ($last->lng2 != '') ? $last->lng2 : $last->lng,
-    //       'time' => $last->created_at->format ('Y-m-d H:i:s')
-    //     ));
+    if (!$id && ($last = Path::last ()) && ($paths[count ($paths) - 1]['id'] != $last->id))
+      array_push ($paths, array (
+          'id' => $last->id,
+          'lat' => isset ($last->lat2) && ($last->lat2 != '') ? $last->lat2 : $last->lat,
+          'lng' => isset ($last->lng2) && ($last->lng2 != '') ? $last->lng2 : $last->lng,
+          'time' => $last->created_at->format ('Y-m-d H:i:s')
+        ));
 
-    // return $this->output_json ($paths);
+    return $this->output_json ($paths);
 
-    echo "Hi " . $this->input->ip_address () . ', Nice to meat you! What are you looking for? : )';
+    // echo "Hi " . $this->input->ip_address () . ', Nice to meat you! What are you looking for? : )';
   }
 
 
