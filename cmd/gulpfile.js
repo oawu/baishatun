@@ -41,5 +41,5 @@ gulp.task ('minify-html', function () {
 // ===================================================
 
 gulp.task ('gh-pages', function () {
-  del (['./root']);
+  del (['./root/command/gulp/root', './root']);
 });
