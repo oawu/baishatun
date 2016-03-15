@@ -35,7 +35,6 @@ $(function () {
   function myPositionPath (r) { return 'M 0 0 m -' + r + ', 0 '+ 'a ' + r + ',' + r + ' 0 1,0 ' + (r * 2) + ',0 ' + 'a ' + r + ',' + r + ' 0 1,0 -' + (r * 2) + ',0' + 'M -' + (r + r / 2) + ' 0 L -' + (r / 2) + ' 0' + 'M 0 -' + (r + r / 2) + ' L 0 -' + (r / 2) + 'M ' + (r + r / 2) + ' 0 L ' + (r / 2) + ' 0' + 'M 0 ' + (r + r / 2) + ' L 0 ' + (r / 2); }
 
   function setLoation (a, n) {
-
     $.ajax ({
       url: _url2,
       data: { a: a, n: n },
@@ -43,6 +42,30 @@ $(function () {
     });
   }
   function initialize () {
+    _map = new google.maps.Map ($map.get (0), {
+      zoom: 16,
+      zoomControl: true,
+      scrollwheel: true,
+      scaleControl: true,
+      mapTypeControl: false,
+      navigationControl: true,
+      streetViewControl: false,
+      disableDoubleClickZoom: true,
+      center: new google.maps.LatLng (23.569396231491233, 120.3030703338623),
+    });
+
+    _map.mapTypes.set ('map_style', new google.maps.StyledMapType ([
+      { featureType: 'transit', stylers: [{ visibility: 'simplified' }] },
+      { featureType: 'poi', stylers: [{ visibility: 'simplified' }] },
+    ]));
+    _map.setMapTypeId ('map_style');
+
+    google.maps.event.addListener (_map, 'zoom_changed', function () {
+      clearTimeout (_timer);
+      _timer = setTimeout (function () {
+        $('img[src="img/mazu.png"]').parents ('.gmnoprint').css ({'opacity': 1});
+      }, 500);
+    });
 
     var reload = function () {
       var id = _latlngs.length ? _latlngs[_latlngs.length - 1].id : 0;
@@ -57,32 +80,7 @@ $(function () {
           return {id: t.i, lat: t.a, lng: t.n, time: t.t};
         });
 
-        if (!_map) {
-          _map = new google.maps.Map ($map.get (0), {
-              zoom: 16,
-              zoomControl: true,
-              scrollwheel: true,
-              scaleControl: true,
-              mapTypeControl: false,
-              navigationControl: true,
-              streetViewControl: false,
-              disableDoubleClickZoom: true,
-              center: new google.maps.LatLng (_latlngs[_latlngs.length - 1].lat, _latlngs[_latlngs.length - 1].lng)
-            });
-
-          _map.mapTypes.set ('map_style', new google.maps.StyledMapType ([
-            { featureType: 'transit', stylers: [{ visibility: 'simplified' }] },
-            { featureType: 'poi', stylers: [{ visibility: 'simplified' }] },
-          ]));
-          _map.setMapTypeId ('map_style');
-
-          google.maps.event.addListener (_map, 'zoom_changed', function () {
-            clearTimeout (_timer);
-            _timer = setTimeout (function () {
-              $('img[src="img/mazu.png"]').parents ('.gmnoprint').css ({'opacity': 1});
-            }, 500);
-          });
-        }
+        _map.setCenter (new google.maps.LatLng (_latlngs[_latlngs.length - 1].lat, _latlngs[_latlngs.length - 1].lng));
 
         if (_markers.length)
           _markers[_markers.length - 1].setIcon ({
@@ -148,6 +146,7 @@ $(function () {
         });
       });
     };
+
     reload ();
     setInterval (reload, 30000);
   }
