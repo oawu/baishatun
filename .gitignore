@@ -1,3 +1,10 @@
+cmd/.sass-cache/*
+
+cmd/node_modules/*
+cmd/.sass-cache/*
+cmd/npm-debug.log
+
+
 .DS_Store
 sftp-config*
 
