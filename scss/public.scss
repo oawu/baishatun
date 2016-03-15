@@ -246,6 +246,7 @@ body {
   @include button;
   position: fixed;
   bottom: 45px;
+  left: 10px;
   @media screen and (min-width: 0px) and (max-width: #{$mediaMobileWidth - 1px}) {
     left: 5px;
   }
