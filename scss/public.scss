@@ -90,6 +90,10 @@ html {
   position: fixed;
   top: 10px;
   left: 10px;
+  @media screen and (min-width: 0px) and (max-width: #{$mediaMobileWidth - 1px}) {
+    top: 5px;
+    left: 5px;
+  }
   display: inline-block;
   width: 40px;
   height: 40px;
@@ -109,6 +113,9 @@ html {
   font-size: 23px;
   padding-left: 3px;
   right: 10px;
+  @media screen and (min-width: 0px) and (max-width: #{$mediaMobileWidth - 1px}) {
+    right: 5px;
+  }
 }
 #c {
   position: fixed;
@@ -233,7 +240,9 @@ body {
   @include button;
   position: fixed;
   bottom: 45px;
-  left: 10px;
+  @media screen and (min-width: 0px) and (max-width: #{$mediaMobileWidth - 1px}) {
+    left: 5px;
+  }
   display: none;
   &.s {
     display: inline-block;
