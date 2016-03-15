@@ -23,6 +23,7 @@ $(function () {
   var _polyline = null;
   var _latlngs = 0;
   var _timer = null;
+  var _isMove = false;
   var _v = 0;
   var _c = 0;
   var _cl = 50;
@@ -65,6 +66,9 @@ $(function () {
       _timer = setTimeout (function () {
         $('img[src="img/mazu.png"]').parents ('.gmnoprint').css ({'opacity': 1});
       }, 500);
+    });
+    google.maps.event.addListener (_map, 'drag', function () {
+      _isMove = true;
     });
 
     var reload = function () {
@@ -126,7 +130,8 @@ $(function () {
           _polyline = new google.maps.Polyline ({ map: _map, strokeColor: 'rgba(249, 39, 114, .35)', strokeWeight: 5 });
         
         _polyline.setPath (_markers.map (function (t) { return t.position; }));
-        mapGo (_map, new google.maps.LatLng (_latlngs[_latlngs.length - 1].lat, _latlngs[_latlngs.length - 1].lng));
+        if (!_isMove) mapGo (_map, new google.maps.LatLng (_latlngs[_latlngs.length - 1].lat, _latlngs[_latlngs.length - 1].lng));
+
         setTimeout (calculateLength.bind (this, _markers.map (function (t) { return t.position; })), 1800);
         $myPosition.addClass ('s').click (function () {
           $myPosition.text ('定位中.. 請稍候..');
