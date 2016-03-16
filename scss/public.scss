@@ -282,10 +282,10 @@ a[href^="http://maps.google.com/maps"], a[href^="https://maps.google.com/maps"] 
   @include transition(all .3s);
   
   &.h {
-    bottom: -100px;
     + #cc {
       display: none;
     }
+    display: none;
   }
   z-index: 22;
 }
