@@ -12,7 +12,43 @@
   speak: none; font-style: normal; font-weight: normal; font-variant: normal; text-transform: none; line-height: 1;
   @include font-smoothing(antialiased);
 }
-.icon-gift:before { content: "\e903"; }.icon-forkandknife:before { content: "\e626"; }.icon-share:before { content: "\e904"; }.icon-facebook:before { content: "\e901"; }.icon-menu:before { content: "\e600"; }.icon-home:before { content: "\e601"; }.icon-github:before { content: "\e603"; }.icon-link-external:before { content: "\e605"; }.icon-user:before { content: "\e610"; }
+
+.icon-checkmark:before {
+    content: "\e900";
+}
+.icon-at:before {
+    content: "\e08e";
+}
+.icon-gift:before {
+    content: "\e903";
+}
+.icon-forkandknife:before {
+    content: "\e626";
+}
+.icon-share:before {
+    content: "\e904";
+}
+.icon-facebook:before {
+    content: "\e901";
+}
+.icon-menu:before {
+    content: "\e600";
+}
+.icon-home:before {
+    content: "\e601";
+}
+.icon-github:before {
+    content: "\e603";
+}
+.icon-link-external:before {
+    content: "\e605";
+}
+.icon-user:before {
+    content: "\e610";
+}
+.icon-triangle-down2:before {
+    content: "\e61f";
+}
 
 * {
   &, &:after, &:before {
@@ -130,7 +166,7 @@ html {
   display: inline-block;
   width: 100%;
   height: 100%;
-  z-index: 10;
+  z-index: 40;
   background-color: rgba(39, 40, 34, .5);
   @include opacity(0);
   @include transition(all .3s);
@@ -143,7 +179,7 @@ html {
   display: inline-block;
   width: $w;
   height: 100%;
-  z-index: 11;
+  z-index: 41;
   -webkit-overflow-scrolling: touch;
   background: $mainBackgroundColor $mainBackgroundImage;
   overflow: hidden;
@@ -218,6 +254,25 @@ html {
   }
 }
 body {
+  &.ss {
+    #sc {
+      display: inline-block;
+    }
+    #ss {
+      span {
+        &:before {
+          top: 2px;
+          line-height: 25px;
+          @include transform(rotate(180deg));
+        }
+        @include opacity(0);
+      }
+      div {
+        height: 30px * 5 + 10px;
+        @include opacity(1);
+      }
+    }
+  }
   &.s {
     #l {
       left: 0;
@@ -287,7 +342,7 @@ a[href^="http://maps.google.com/maps"], a[href^="https://maps.google.com/maps"] 
     }
     display: none;
   }
-  z-index: 22;
+  z-index: 220;
 }
 
 #cc {
@@ -298,5 +353,120 @@ a[href^="http://maps.google.com/maps"], a[href^="https://maps.google.com/maps"] 
   width: 100%;
   height: 100%;
   background-color: rgba(39, 40, 34, .5);
+  z-index: 210;
+}
+
+#sc {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(39, 40, 34, .5);
   z-index: 21;
+}
+#ss {
+  position: fixed;
+  top: 10px;
+  right: 60px;
+  @media screen and (min-width: 0px) and (max-width: #{$mediaMobileWidth - 1px}) {
+    top: 5px;
+    right: 50px;
+  }
+  display: none;
+  &.s {
+    display: inline-block;
+  }
+  width: 130px + 10px;
+  z-index: 22;
+  padding: 0 5px;
+  height: 30px + 10px;
+  text-align: left;
+  cursor: pointer;
+
+  span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 10px;
+    display: inline-block;
+    width: 130px + 10px;
+    height: 30px + 10px;
+    line-height: 18px;
+    background-color: rgba(255, 255, 255, 1);
+    cursor: pointer;
+    @include box-shadow(0 0 2px rgba(39, 40, 34, .3));
+    @include border-radius(2px);
+    @include opacity(1);
+    
+    &:before {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      text-align: left;
+      font-size: 30px;
+      line-height: 31px;
+      @include opacity(.5);
+      @include transition(all .3s);
+      @include transform(rotate(0));
+    }
+  }
+  div {
+    // height: 30px * 4;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: inline-block;
+    width: 130px + 10px;
+    height: 0;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 1);
+    padding: 5px;
+    cursor: pointer;
+    @include transition(all .3s);
+    @include opacity(0);
+    @include box-shadow(0 0 2px rgba(39, 40, 34, .3));
+    @include border-radius(2px);
+
+    a {
+      position: relative;
+      @include a;
+      width: 100%;
+      padding: 5px;
+      height: 30px;
+      line-height: 28px;
+      padding: 0 5px !important;
+      cursor: pointer;
+      &:before {
+        margin-right: 5px;
+        @include opacity(.5);
+      }
+      &.a {
+        color: rgba(12, 65, 109, .9);
+        font-weight: bold;
+
+        &:after {
+          content: "\e900";
+          font-family: 'icomoon', "微軟正黑體", "Open sans", "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif;
+          position: absolute;
+          right: 3px;
+          top: 3px;
+          display: inline-block;
+          width: 30px;
+          height: 30px;
+          font-size: 14px;
+          text-align: right;
+          font-weight: normal;
+          @include opacity(.7);
+        }
+      }
+      + a {
+        border-top: 1px solid rgba(39, 40, 34, .15);
+      }
+    }
+  }
 }

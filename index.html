@@ -53,9 +53,9 @@
     <meta property="article:modified_time" content="2016-03-15T13:51:06+08:00" />
     <meta property="article:published_time" content="2016-03-15T13:51:06+08:00" />
 
-    <link href="css/public.css?v=9" rel="stylesheet" type="text/css" />
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApe66UP8VJNwSVufAi0rr9dpq7ON0Dq6Y&v=3.exp&language=zh-TW" language="javascript" type="text/javascript"></script>
-    <script src="js/all_3.js?v=7" language="javascript" type="text/javascript" ></script>
+    <link href="css/public.css?v=10" rel="stylesheet" type="text/css" />
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApe66UP8VJNwSVufAi0rr9dpq7ON0Dq6Y&v=3.exp&language=zh-TW&libraries=visualization" language="javascript" type="text/javascript"></script>
+    <script src="js/all_3.js?v=8" language="javascript" type="text/javascript" ></script>
 
   </head>
   <body lang="zh-tw">
@@ -66,6 +66,17 @@
       <div id='ll'>計算中..</div>
       <div id='i'>我的位置</div>
       <div id='s' class='icon-share'></div>
+
+      <label id='ss' data-val='0'>
+        <span class='icon-triangle-down2'>信徒目前分佈</span>
+        <div>
+          <a data-val='0' class='icon-at a'>目前分佈</a>
+          <a data-val='1' class='icon-at'>30分鐘前</a>
+          <a data-val='2' class='icon-at'>1 小時前</a>
+          <a data-val='4' class='icon-at'>2 小時前</a>
+          <a data-val='-1' class='icon-at'>不顯示分佈</a>
+        </div>
+      </label>
     </div>
 
     <div id='m' class='icon-menu'></div>
@@ -98,5 +109,6 @@
     </div>
     <div id='mmm'>白沙屯 GPS 定位中<br/>馬上好，請稍候一下..</div>
     <div id='cc'></div>
+    <div id='sc'></div>
   </body>
 </html>
