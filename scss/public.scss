@@ -441,6 +441,7 @@ a[href^="http://maps.google.com/maps"], a[href^="https://maps.google.com/maps"] 
       line-height: 28px;
       padding: 0 5px !important;
       cursor: pointer;
+      font-size: 15px;
       &:before {
         margin-right: 5px;
         @include opacity(.5);

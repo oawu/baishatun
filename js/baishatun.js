@@ -46,9 +46,8 @@ $(function () {
       async: true, cache: false, dataType: 'json', type: 'POST',
     });
   }
-  function loadHeatmap (text) {
-    if (_heatmap)
-      return;
+  function loadHeatmap (text, isRoop) {
+    if (isRoop && _heatmap) return;
 
     if ($ss.data ('val') < 0) {
       if (_heatmap) {
@@ -56,6 +55,7 @@ $(function () {
         $ss.data ('val', -1).find ('span').text ('不顯示分佈');
         $ss.find ('>div>a[data-val="-1"]').addClass ('a').siblings ().removeClass ('a');
       }
+
       return;
     }
     
@@ -85,7 +85,11 @@ $(function () {
             $ss.data ('val', $(this).data ('val'));
             loadHeatmap ($(this).text ());
           });
-        _heatmap = new google.maps.visualization.HeatmapLayer ({ map: _map });
+        _heatmap = new google.maps.visualization.HeatmapLayer ({
+          map: _map,
+          radius: 20,
+          opacity: 0.9
+        });
       }
       _heatmap.setData (result.q.map (function (t) { return new google.maps.LatLng (t.a, t.n); }));
     })
@@ -193,10 +197,6 @@ $(function () {
                   fillOpacity: 0.5
                 }
               });
-
-            google.maps.event.addListener (marker, 'click', function (e) {
-              console.error (t.id);
-            });
             return marker;
         }));
 
@@ -209,7 +209,7 @@ $(function () {
         $mmm.addClass ('h');
         setTimeout (calculateLength.bind (this, _markers.map (function (t) { return t.position; })), 1800);
 
-        loadHeatmap ('信徒目前分佈');
+        loadHeatmap ('信徒目前分佈', 1);
       });
     };
 
