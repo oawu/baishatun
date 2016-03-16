@@ -262,3 +262,23 @@ a[href^="http://maps.google.com/maps"], a[href^="https://maps.google.com/maps"] 
 .gm-style-cc {
   display: none;
 }
+
+#mmm {
+  position: fixed;
+  bottom: 0;
+  text-align: center;
+  font-family: 14px;
+  left: calc((100% - 180px) / 2);
+  width: 180px;
+  padding: 5px;
+  background-color: rgba(255, 255, 255, .8);
+  @include border-top-left-radius(2px);
+  @include border-top-right-radius(2px);
+  @include transition(all .3s);
+  @include box-shadow(0 0 5px 1px rgba(0, 0, 0, 0.2), 0 0 1px rgba(39, 40, 34, .4)); 
+  @include transition(all .3s);
+  
+  &.h {
+    bottom: -100px;
+  }
+}

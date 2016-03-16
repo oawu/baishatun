@@ -30,6 +30,7 @@ $(function () {
   var _url = 'http://dev.mazu.ioa.tw/api/baishatun/2/';
   var _url2 = 'http://dev.mazu.ioa.tw/api/baishatun/location/';
   var $length = $('#ll');
+  var $mmm = $('#mmm');
 
   function circlePath (r) { return 'M 0 0 m -' + r + ', 0 '+ 'a ' + r + ',' + r + ' 0 1,0 ' + (r * 2) + ',0 ' + 'a ' + r + ',' + r + ' 0 1,0 -' + (r * 2) + ',0';}
   function calculateLength (points) { var size = Math.pow (10, 2); if (google.maps.geometry.spherical) $length.text (Math.round (google.maps.geometry.spherical.computeLength (points) / 1000 * size) / size).addClass ('s'); }
@@ -131,7 +132,7 @@ $(function () {
         
         _polyline.setPath (_markers.map (function (t) { return t.position; }));
         if (!_isMove) mapGo (_map, new google.maps.LatLng (_latlngs[_latlngs.length - 1].lat, _latlngs[_latlngs.length - 1].lng));
-
+        $mmm.addClass ('h');
         setTimeout (calculateLength.bind (this, _markers.map (function (t) { return t.position; })), 1800);
         $myPosition.addClass ('s').click (function () {
           $myPosition.text ('定位中.. 請稍候..');
