@@ -47,8 +47,15 @@ $(function () {
     });
   }
   function loadHeatmap (text) {
-    if (_heatmap && ($ss.data ('val') < 0)) {
-      if (_heatmap) _heatmap.setData ([]);
+    if (_heatmap)
+      return;
+
+    if ($ss.data ('val') < 0) {
+      if (_heatmap) {
+        _heatmap.setData ([]);
+        $ss.data ('val', -1).find ('span').text ('不顯示分佈');
+        $ss.find ('>div>a[data-val="-1"]').addClass ('a').siblings ().removeClass ('a');
+      }
       return;
     }
     
