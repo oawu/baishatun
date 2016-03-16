@@ -3,8 +3,7 @@
  * @copyright   Copyright (c) 2015 OA Wu Design
  */
 
-var _url = 'http://dev.mazu.ioa.tw/api/baishatun/1/';
-var _url2 = 'http://dev.mazu.ioa.tw/api/baishatun/location/';
+var _url = 'http://dev.mazu.ioa.tw/api/baishatun/1/', _url2 = 'http://dev.mazu.ioa.tw/api/baishatun/location/';
 
 function getUnit (will, now) { var addLat = will.lat () - now.lat (), addLng = will.lng () - now.lng (), aveAdd = ((Math.abs (addLat) + Math.abs (addLng)) / 2), unit = aveAdd < 10 ? aveAdd < 1 ? aveAdd < 0.1 ? aveAdd < 0.01 ? aveAdd < 0.001 ? aveAdd < 0.0001 ? 3 : 6 : 9 : 12 : 15 : 24 : 21, lat = addLat / unit, lng = addLng / unit; if (!((Math.abs (lat) > 0) || (Math.abs (lng) > 0))) return null; return { unit: unit, lat: lat, lng: lng }; }
 function markerMove (marker, unitLat, unitLng, unitCount, unit, callback) {if (unit > unitCount) {marker.setPosition (new google.maps.LatLng (marker.getPosition ().lat () + unitLat, marker.getPosition ().lng () + unitLng));clearTimeout (window.markerMoveTimer);window.markerMoveTimer = setTimeout (function () {markerMove (marker, unitLat, unitLng, unitCount + 1, unit, callback);}, 25);} else { if (callback) callback (marker); }}
@@ -34,7 +33,7 @@ $(function () {
   var $mmm = $('#mmm');
 
   function circlePath (r) { return 'M 0 0 m -' + r + ', 0 '+ 'a ' + r + ',' + r + ' 0 1,0 ' + (r * 2) + ',0 ' + 'a ' + r + ',' + r + ' 0 1,0 -' + (r * 2) + ',0';}
-  function calculateLength (points) { var size = Math.pow (10, 2); if (google.maps.geometry.spherical) $length.text (Math.round (google.maps.geometry.spherical.computeLength (points) / 1000 * size) / size); }
+  function calculateLength (points) { var size = Math.pow (10, 2); if (google.maps.geometry.spherical) { var l = Math.round (google.maps.geometry.spherical.computeLength (points) / 1000 * size) / size; if (l > 0) $length.text (l); }}
   function myPositionPath (r) { return 'M 0 0 m -' + r + ', 0 '+ 'a ' + r + ',' + r + ' 0 1,0 ' + (r * 2) + ',0 ' + 'a ' + r + ',' + r + ' 0 1,0 -' + (r * 2) + ',0' + 'M -' + (r + r / 2) + ' 0 L -' + (r / 2) + ' 0' + 'M 0 -' + (r + r / 2) + ' L 0 -' + (r / 2) + 'M ' + (r + r / 2) + ' 0 L ' + (r / 2) + ' 0' + 'M 0 ' + (r + r / 2) + ' L 0 ' + (r / 2); }
 
   function setLoation (a, n) {
@@ -82,7 +81,7 @@ $(function () {
         if (_v != result.v) return location.reload ();
         if (!(result.s && result.p.length)) return ;
         
-        $length.addClass ('s').html (result.l);
+        if (!$length.data ('is_init')) $length.addClass ('s').html (result.l).data ('is_init', true);
 
         _latlngs = result.p.map (function (t) {
           return {id: t.i, lat: t.a, lng: t.n, time: t.t};
@@ -158,7 +157,7 @@ $(function () {
     };
 
     reload ();
-    setInterval (reload, 30000);
+    setInterval (reload, 45000);
   }
 
   google.maps.event.addDomListener (window, 'load', initialize);
