@@ -50,11 +50,21 @@ $(function () {
     if (isRoop && _heatmap) return;
 
     if ($ss.data ('val') < 0) {
-      if (_heatmap) {
-        _heatmap.setData ([]);
-        $ss.data ('val', -1).find ('span').text ('不顯示分佈');
-        $ss.find ('>div>a[data-val="-1"]').addClass ('a').siblings ().removeClass ('a');
+      if (!_heatmap) {
+        _heatmap = new google.maps.visualization.HeatmapLayer ({
+          map: _map,
+          radius: 20,
+          opacity: 0.9
+        });
+        $ss.addClass ('s').find ('a').click (function () {
+              $(this).addClass ('a').siblings ().removeClass ('a');
+              $ss.data ('val', $(this).data ('val'));
+              loadHeatmap ($(this).text ());
+            });
       }
+      _heatmap.setData ([]);
+      $ss.data ('val', -1).find ('span').text ('不顯示信徒分佈');
+      $ss.find ('>div>a[data-val="-1"]').addClass ('a').siblings ().removeClass ('a');
 
       return;
     }
@@ -73,7 +83,7 @@ $(function () {
     .done (function (result) {
       if (!result.s) {
         _heatmap.setData ([]);
-        $ss.data ('val', -1).find ('span').text ('不顯示分佈');
+        $ss.data ('val', -1).find ('span').text ('不顯示信徒分佈');
         $ss.find ('>div>a[data-val="-1"]').addClass ('a').siblings ().removeClass ('a');
         return ;
       }
@@ -96,7 +106,7 @@ $(function () {
     .fail (function (result) {
       if (_heatmap) {
         _heatmap.setData ([]);
-        $ss.data ('val', -1).find ('span').text ('不顯示分佈');
+        $ss.data ('val', -1).find ('span').text ('不顯示信徒分佈');
         $ss.find ('>div>a[data-val="-1"]').addClass ('a').siblings ().removeClass ('a');
       }
     })
@@ -209,7 +219,7 @@ $(function () {
         $mmm.addClass ('h');
         setTimeout (calculateLength.bind (this, _markers.map (function (t) { return t.position; })), 1800);
 
-        loadHeatmap ('信徒目前分佈', 1);
+        loadHeatmap ('不顯示信徒分佈', 1);
       });
     };
 

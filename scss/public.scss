@@ -378,7 +378,7 @@ a[href^="http://maps.google.com/maps"], a[href^="https://maps.google.com/maps"] 
   &.s {
     display: inline-block;
   }
-  width: 130px + 10px;
+  width: 150px + 10px;
   z-index: 22;
   padding: 0 5px;
   height: 30px + 10px;
@@ -391,7 +391,7 @@ a[href^="http://maps.google.com/maps"], a[href^="https://maps.google.com/maps"] 
     left: 0;
     padding: 10px;
     display: inline-block;
-    width: 130px + 10px;
+    width: 150px + 10px;
     height: 30px + 10px;
     line-height: 18px;
     background-color: rgba(255, 255, 255, 1);
@@ -421,7 +421,7 @@ a[href^="http://maps.google.com/maps"], a[href^="https://maps.google.com/maps"] 
     top: 0;
     left: 0;
     display: inline-block;
-    width: 130px + 10px;
+    width: 150px + 10px;
     height: 0;
     overflow: hidden;
     background-color: rgba(255, 255, 255, 1);
