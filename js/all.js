@@ -58,7 +58,7 @@ $(function () {
       _myMarker = null,
       _latlngs = [],
       _c = 0,
-      _cl = 20,
+      _cl = 36,
       _v = 0,
       _markers = [],
       _polyline = null,
@@ -170,7 +170,7 @@ $(function () {
     initMap ();
     initMyPosition ();
     loadData (true);
-    setInterval (loadData, 30000);
+    setInterval (loadData, 50000);
   }
   
   google.maps.event.addDomListener (window, 'load', initialize);
