@@ -148,14 +148,15 @@ $(function () {
         $('img[src="img/mazu.png"]').parents ('.gmnoprint').css ({'opacity': 1});
       }, 500);
 
-      _map.zoom < 14 ? 
-        _map.zoom < 13 ? 
-          _map.zoom < 12 ? 
+      _map.zoom < 13 ? 
+        _map.zoom < 12 ? 
+          _map.zoom < 11 ? 
             _times.forEach (function (t, i) { t.setMap (i % 4 ? null : _map); }) : 
           _times.forEach (function (t, i) { t.setMap (i % 3 ? null : _map); }) : 
         _times.forEach (function (t, i) { t.setMap (i % 2 ? null : _map); }) : 
       _times.forEach (function (t, i) { t.setMap (_map); });
 
+      _map.zoom < 13 ? _infos.forEach (function (t, i) { t.setMap (null); }) : _infos.forEach (function (t, i) { t.setMap (_map); });
     });
     google.maps.event.addListener (_map, 'drag', function () {
       _isMove = true;
@@ -221,9 +222,9 @@ $(function () {
                 position: new google.maps.LatLng (t.lat, t.lng),
                 icon: i == _latlngs.length - 1 ? 'img/mazu.png' : {
                   path: circlePath (4),
-                  strokeColor: 'rgba(249, 39, 114, .4)',
+                  strokeColor: 'rgba(255, 68, 170, 1)',
                   strokeWeight: 1,
-                  fillColor: 'rgba(249, 39, 114, .5)',
+                  fillColor: 'rgba(255, 68, 170, 1)',
                   fillOpacity: 0.5
                 }
               });
@@ -231,7 +232,7 @@ $(function () {
         }));
 
         if (!_polyline)
-          _polyline = new google.maps.Polyline ({ map: _map, strokeColor: 'rgba(249, 39, 114, .35)', strokeWeight: 5 });
+          _polyline = new google.maps.Polyline ({ map: _map, strokeColor: 'rgba(249, 39, 114, .45)', strokeWeight: 5 });
         _polyline.setPath (_markers.map (function (t) { return t.position; }));
         
         if (!_isMove) mapGo (_map, new google.maps.LatLng (_latlngs[_latlngs.length - 1].lat, _latlngs[_latlngs.length - 1].lng));
