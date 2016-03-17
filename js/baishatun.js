@@ -172,7 +172,7 @@ $(function () {
         
         if (!$length.data ('is_init')) $length.html (result.l).data ('is_init', true);
         
-        _infos.forEach (function (t) { if (t) t.map (null); });
+        _infos.forEach (function (t) { if (t) t.setMap (null); });
         _infos = [];
         _infos = result.i.map (function (t) {
 
