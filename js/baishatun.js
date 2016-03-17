@@ -26,6 +26,7 @@ $(function () {
   var _myMarker = null;
   var _polyline = null;
   var _latlngs = 0;
+  var _infos = [];
   var _timer = null;
   var _isMove = false;
   var _v = 0;
@@ -112,6 +113,8 @@ $(function () {
     })
     .complete (function (result) {});
   }
+
+
   function initialize () {
     _map = new google.maps.Map ($map.get (0), {
       zoom: 16,
@@ -167,7 +170,25 @@ $(function () {
         if (_v != result.v) return location.reload ();
         if (!(result.s && result.p.length)) return ;
         
-        if (!$length.data ('is_init')) $length.addClass ('s').html (result.l).data ('is_init', true);
+        if (!$length.data ('is_init')) $length.html (result.l).data ('is_init', true);
+        
+        _infos.forEach (function (t) { t.map (null); });
+        _infos = [];
+        _infos = result.i.map (function (t) {
+
+          return new MarkerWithLabel ({
+            draggable: false,
+            raiseOnDrag: false,
+            clickable: false,
+            optimized: false,
+            labelContent: '<div class="c"><div>' + t.m.map (function (u) {return '<span>' + u + '</span>';}).join ('') + '</div></div><div class="b"></div>',
+            labelAnchor: new google.maps.Point (130 / 2, 37 + 20 - 4 + (t.m.length - 1) * 23),
+            labelClass: 'i ' + 'n' + t.m.length,
+            icon: {path: 'M 0 0'},
+            map: _map,
+            position: new google.maps.LatLng (t.a, t.n)
+          });
+        });
 
         _latlngs = result.p.map (function (t) {
           return {id: t.i, lat: t.a, lng: t.n, time: t.t};
