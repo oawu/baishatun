@@ -177,6 +177,7 @@ $(function () {
         _infos = result.i.map (function (t) {
 
           return new MarkerWithLabel ({
+            zIndex: 1,
             draggable: false,
             raiseOnDrag: false,
             clickable: false,
