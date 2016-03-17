@@ -155,6 +155,7 @@ $(function () {
           _times.forEach (function (t, i) { t.setMap (i % 3 ? null : _map); }) : 
         _times.forEach (function (t, i) { t.setMap (i % 2 ? null : _map); }) : 
       _times.forEach (function (t, i) { t.setMap (_map); });
+
     });
     google.maps.event.addListener (_map, 'drag', function () {
       _isMove = true;
