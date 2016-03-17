@@ -269,7 +269,7 @@ $(function () {
     };
 
     reload ();
-    setInterval (reload, 60000);
+    setInterval (reload, 75000);
   }
 
   google.maps.event.addDomListener (window, 'load', initialize);
