@@ -241,6 +241,12 @@ $(function () {
             position: new google.maps.LatLng (t.a, t.n)
           });
         });
+        
+        clearTimeout (_timer);
+        _timer = setTimeout (function () {
+          $('img[src="img/mazu.png"]').parents ('.gmnoprint').css ({'opacity': 1});
+        }, 2000);
+
       });
     };
 
