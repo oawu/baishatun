@@ -10,4 +10,256 @@ function inherits(e,t){function i(){}i.prototype=t.prototype,e.superClass_=t.pro
 !function(t){"function"==typeof define&&define.amd?define(["jquery"],t):t(jQuery)}(function(t){function e(){var e=a(this),o=n.settings,s=t(this).data("tag");return isNaN(e.datetime)||(0==o.cutoff||r(e.datetime)<o.cutoff)&&(""==s||void 0===s?t(this).text(i(e.datetime)):t(this).data(s,i(e.datetime))),this}function a(e){if(e=t(e),!e.data("timeago")){e.data("timeago",{datetime:n.datetime(e)});var a=t.trim(e.text());n.settings.localeTitle?e.attr("title",e.data("timeago").datetime.toLocaleString()):!(a.length>0)||n.isTime(e)&&e.attr("title")||e.attr("title",a)}return e.data("timeago")}function i(t){return n.inWords(r(t))}function r(t){return(new Date).getTime()-t.getTime()}t.timeago=function(e){return i(e instanceof Date?e:"string"==typeof e?t.timeago.parse(e):"number"==typeof e?new Date(e):t.timeago.datetime(e))};var n=t.timeago;t.extend(t.timeago,{settings:{refreshMillis:6e4,allowFuture:!1,localeTitle:!1,cutoff:0,strings:{prefixAgo:null,prefixFromNow:null,suffixAgo:"ago",suffixFromNow:"from now",seconds:"less than a minute",minute:"about a minute",minutes:"%d minutes",hour:"about an hour",hours:"about %d hours",day:"a day",days:"%d days",month:"about a month",months:"%d months",year:"about a year",years:"%d years",wordSeparator:" ",numbers:[]}},inWords:function(e){function a(a,r){var n=t.isFunction(a)?a(r,e):a,o=i.numbers&&i.numbers[r]||r;return n.replace(/%d/i,o)}var i=this.settings.strings,r=i.prefixAgo,n=i.suffixAgo;this.settings.allowFuture&&0>e&&(r=i.prefixFromNow,n=i.suffixFromNow);var o=Math.abs(e)/1e3,s=o/60,u=s/60,m=u/24,d=m/365,l=45>o&&a(i.seconds,Math.round(o))||90>o&&a(i.minute,1)||45>s&&a(i.minutes,Math.round(s))||90>s&&a(i.hour,1)||24>u&&a(i.hours,Math.round(u))||42>u&&a(i.day,1)||30>m&&a(i.days,Math.round(m))||45>m&&a(i.month,1)||365>m&&a(i.months,Math.round(m/30))||1.5>d&&a(i.year,1)||a(i.years,Math.round(d)),f=i.wordSeparator||"";return void 0===i.wordSeparator&&(f=" "),t.trim([r,l,n].join(f))},parse:function(e){var a=t.trim(e);return a=a.replace(/\.\d+/,""),a=a.replace(/-/,"/").replace(/-/,"/"),a=a.replace(/T/," ").replace(/Z/," UTC"),a=a.replace(/([\+\-]\d\d)\:?(\d\d)/," $1$2"),a=a.replace(/([\+\-]\d\d)$/," $100"),new Date(a)},datetime:function(e){var a=n.isTime(e)?t(e).attr("datetime"):t(e).data("time");return n.parse(a)},isTime:function(e){return"time"===t(e).get(0).tagName.toLowerCase()}});var o={init:function(){var a=t.proxy(e,this);a();var i=n.settings;i.refreshMillis>0&&(this._timeagoInterval=setInterval(a,i.refreshMillis))},update:function(a){var i=n.parse(a);t(this).data("timeago",{datetime:i}),n.settings.localeTitle&&t(this).attr("title",i.toLocaleString()),e.apply(this)},updateFromDOM:function(){t(this).data("timeago",{datetime:n.parse(n.isTime(this)?t(this).attr("datetime"):t(this).attr("title"))}),e.apply(this)},dispose:function(){this._timeagoInterval&&(window.clearInterval(this._timeagoInterval),this._timeagoInterval=null)}};t.fn.timeago=function(t,e){var a=t?o[t]:o.init;if(!a)throw new Error("Unknown function name '"+t+"' for timeago");return this.each(function(){a.call(this,e)}),this},document.createElement("abbr"),document.createElement("time")});
 jQuery.timeago.settings.strings={prefixAgo:null,prefixFromNow:"從現在開始",suffixAgo:"之前",suffixFromNow:null,seconds:"不到 1 分鐘",minute:"約 1 分鐘",minutes:"%d 分鐘",hour:"約 1 小時",hours:"%d 小時",day:"約 1 天",days:"%d 天",month:"約 1 個月",months:"%d 個月",year:"約 1 年",years:"%d 年",numbers:[],wordSeparator:""};
 window.fbAsyncInit=function(){FB.init({appId:"695906407210191",xfbml:!0,version:"v2.4"})},function(e,n,t){var o,c=e.getElementsByTagName(n)[0];e.getElementById(t)||(o=e.createElement(n),o.id=t,o.src="//connect.facebook.net/zh_TW/sdk.js",c.parentNode.insertBefore(o,c))}(document,"script","facebook-jssdk"),$(function(){});
-function getUnit(a,t){var e=a.lat()-t.lat(),n=a.lng()-t.lng(),o=(Math.abs(e)+Math.abs(n))/2,i=10>o?1>o?.1>o?.01>o?.001>o?1e-4>o?3:6:9:12:15:24:21,l=e/i,s=n/i;return Math.abs(l)>0||Math.abs(s)>0?{unit:i,lat:l,lng:s}:null}function markerMove(a,t,e,n,o,i){o>n?(a.setPosition(new google.maps.LatLng(a.getPosition().lat()+t,a.getPosition().lng()+e)),clearTimeout(window.markerMoveTimer),window.markerMoveTimer=setTimeout(function(){markerMove(a,t,e,n+1,o,i)},25)):i&&i(a)}function markerGo(a,t,e){var n=a.getPosition(),o=getUnit(t,n);return o?void markerMove(a,o.lat,o.lng,0,o.unit,e):!1}function mapMove(a,t,e,n,o,i){o>n?(a.setCenter(new google.maps.LatLng(a.getCenter().lat()+t,a.getCenter().lng()+e)),clearTimeout(window.mapMoveTimer),window.mapMoveTimer=setTimeout(function(){mapMove(a,t,e,n+1,o,i)},25)):i&&i(a)}function mapGo(a,t,e){var n=a.center,o=getUnit(t,n);return o?void mapMove(a,o.lat,o.lng,0,o.unit,e):!1}$(function(){function a(a){return"M 0 0 m -"+a+", 0 a "+a+","+a+" 0 1,0 "+2*a+",0 a "+a+","+a+" 0 1,0 -"+2*a+",0"}function t(a){var t=Math.pow(10,2);if(google.maps.geometry.spherical){var e=Math.round(google.maps.geometry.spherical.computeLength(a)/1e3*t)/t;e>0&&y.text(e)}}function e(a){return"M 0 0 m -"+a+", 0 a "+a+","+a+" 0 1,0 "+2*a+",0 a "+a+","+a+" 0 1,0 -"+2*a+",0M -"+(a+a/2)+" 0 L -"+a/2+" 0M 0 -"+(a+a/2)+" L 0 -"+a/2+"M "+(a+a/2)+" 0 L "+a/2+" 0M 0 "+(a+a/2)+" L 0 "+a/2}function n(a,t){$.ajax({url:_url2,data:{a:a,n:t},async:!0,cache:!1,dataType:"json",type:"POST"})}function o(a,t){return t&&d?void 0:M.data("val")<0?(d||(d=new google.maps.visualization.HeatmapLayer({map:g,radius:20,opacity:.9}),M.addClass("s").find("a").click(function(){$(this).addClass("a").siblings().removeClass("a"),M.data("val",$(this).data("val")),o($(this).text())})),d.setData([]),M.data("val",-1).find("span").text("不顯示信徒分佈"),void M.find('>div>a[data-val="-1"]').addClass("a").siblings().removeClass("a")):void $.ajax({url:_url3+M.data("val"),data:{},async:!0,cache:!1,dataType:"json",type:"GET",beforeSend:function(){d&&(d.setData([]),M.find("span").text("取得資料中.."))}}).done(function(t){return t.s?(M.find("span").text(a),d||(M.addClass("s").find("a").click(function(){$(this).addClass("a").siblings().removeClass("a"),M.data("val",$(this).data("val")),o($(this).text())}),d=new google.maps.visualization.HeatmapLayer({map:g,radius:20,opacity:.9})),void d.setData(t.q.map(function(a){return new google.maps.LatLng(a.a,a.n)}))):(d.setData([]),M.data("val",-1).find("span").text("不顯示信徒分佈"),void M.find('>div>a[data-val="-1"]').addClass("a").siblings().removeClass("a"))}).fail(function(a){d&&(d.setData([]),M.data("val",-1).find("span").text("不顯示信徒分佈"),M.find('>div>a[data-val="-1"]').addClass("a").siblings().removeClass("a"))}).complete(function(a){})}function i(){g=new google.maps.Map(s.get(0),{zoom:16,zoomControl:!0,scrollwheel:!0,scaleControl:!0,mapTypeControl:!1,navigationControl:!0,streetViewControl:!1,disableDoubleClickZoom:!0,center:new google.maps.LatLng(23.569396231491233,120.3030703338623)}),g.mapTypes.set("map_style",new google.maps.StyledMapType([{featureType:"transit",stylers:[{visibility:"simplified"}]},{featureType:"poi",stylers:[{visibility:"simplified"}]}])),g.setMapTypeId("map_style"),google.maps.event.addListener(g,"zoom_changed",function(){clearTimeout(v),v=setTimeout(function(){$('img[src="img/mazu.png"]').parents(".gmnoprint").css({opacity:1})},500)}),google.maps.event.addListener(g,"drag",function(){h=!0}),r.addClass("s").click(function(){r.text("定位中.. 請稍候.."),navigator.geolocation.getCurrentPosition(function(a){r.text("我的位置"),c||(c=new google.maps.Marker({map:g,draggable:!1,optimized:!1})),c.setPosition(new google.maps.LatLng(a.coords.latitude,a.coords.longitude)),c.setIcon({path:e(30),strokeColor:"rgba(174, 129, 255, .8)",strokeWeight:3,fillColor:"rgba(174, 129, 255, .5)",fillOpacity:.2}),g.setCenter(new google.maps.LatLng(a.coords.latitude,a.coords.longitude)),n(a.coords.latitude,a.coords.longitude)},function(){r.remove()})});var i=function(){var e=u.length?u[u.length-1].id:0;$.when($.ajax(_url+e+"?t="+(new Date).getTime())).done(function(e){return b++>C?location.reload():(0===w&&(w=e.v),w!=e.v?location.reload():void(e.s&&e.p.length&&(y.data("is_init")||y.html(e.l).data("is_init",!0),u=e.p.map(function(a){return{id:a.i,lat:a.a,lng:a.n,time:a.t}}),g.setCenter(new google.maps.LatLng(u[u.length-1].lat,u[u.length-1].lng)),m.length&&m[m.length-1].setIcon({path:a(6),strokeColor:"rgba(249, 39, 114, 1)",strokeWeight:1,fillColor:"rgba(249, 39, 114, .8)",fillOpacity:.5}),m=m.concat(u.map(function(t,e){e%5===0&&e!==u.length-1&&new MarkerWithLabel({position:new google.maps.LatLng(t.lat,t.lng),draggable:!1,raiseOnDrag:!0,map:g,labelContent:""+$.timeago(t.time),labelAnchor:new google.maps.Point(0,0),labelClass:"time",icon:{path:"M 0 0"}});var n=new google.maps.Marker({map:g,draggable:!1,zIndex:t.id,optimized:!1,position:new google.maps.LatLng(t.lat,t.lng),icon:e==u.length-1?"img/mazu.png":{path:a(6),strokeColor:"rgba(249, 39, 114, .4)",strokeWeight:1,fillColor:"rgba(249, 39, 114, .5)",fillOpacity:.5}});return n})),p||(p=new google.maps.Polyline({map:g,strokeColor:"rgba(249, 39, 114, .35)",strokeWeight:5})),p.setPath(m.map(function(a){return a.position})),h||mapGo(g,new google.maps.LatLng(u[u.length-1].lat,u[u.length-1].lng)),L.addClass("h"),setTimeout(t.bind(this,m.map(function(a){return a.position})),1800),o("不顯示信徒分佈",1),f.forEach(function(a){a&&a.setMap(null)}),f=[],f=e.i.map(function(a){return new MarkerWithLabel({zIndex:1,draggable:!1,raiseOnDrag:!1,clickable:!1,optimized:!1,labelContent:'<div class="c"><div>'+a.m.map(function(a){return"<span>"+a+"</span>"}).join("")+'</div></div><div class="b"></div>',labelAnchor:new google.maps.Point(65,53+23*(a.m.length-1)),labelClass:"i n"+a.m.length,icon:{path:"M 0 0"},map:g,position:new google.maps.LatLng(a.a,a.n)})}),clearTimeout(v),v=setTimeout(function(){$('img[src="img/mazu.png"]').parents(".gmnoprint").css({opacity:1})},2e3))))})};i(),setInterval(i,6e4)}var l=$("body");$("#m, #c").click(function(){l.toggleClass("s")}),$("#ss, #sc").click(function(){l.toggleClass("ss")});var s=$("#mm"),r=$("#i"),g=($("#s").click(function(){window.open("https://www.facebook.com/sharer/sharer.php?u="+window.location.href,"分享至臉書！","scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,top=100,left="+(window.screen?Math.round(screen.width/2-275):100))}),null),d=null,m=[],c=null,p=null,u=0,f=[],v=null,h=!1,w=0,b=0,C=20,y=$("#ll"),L=$("#mmm"),M=$("#ss");google.maps.event.addDomListener(window,"load",i)});
+
+function getUnit (will, now) { var addLat = will.lat () - now.lat (), addLng = will.lng () - now.lng (), aveAdd = ((Math.abs (addLat) + Math.abs (addLng)) / 2), unit = aveAdd < 10 ? aveAdd < 1 ? aveAdd < 0.1 ? aveAdd < 0.01 ? aveAdd < 0.001 ? aveAdd < 0.0001 ? 3 : 6 : 9 : 12 : 15 : 24 : 21, lat = addLat / unit, lng = addLng / unit; if (!((Math.abs (lat) > 0) || (Math.abs (lng) > 0))) return null; return { unit: unit, lat: lat, lng: lng }; }
+function markerMove (marker, unitLat, unitLng, unitCount, unit, callback) {if (unit > unitCount) {marker.setPosition (new google.maps.LatLng (marker.getPosition ().lat () + unitLat, marker.getPosition ().lng () + unitLng));clearTimeout (window.markerMoveTimer);window.markerMoveTimer = setTimeout (function () {markerMove (marker, unitLat, unitLng, unitCount + 1, unit, callback);}, 25);} else { if (callback) callback (marker); }}
+function markerGo (marker, will, callback) {var now = marker.getPosition ();var Unit = getUnit (will, now);if (!Unit) return false;markerMove (marker, Unit.lat, Unit.lng, 0, Unit.unit, callback);}
+function mapMove (map, unitLat, unitLng, unitCount, unit, callback) {if (unit > unitCount) {map.setCenter (new google.maps.LatLng (map.getCenter ().lat () + unitLat, map.getCenter ().lng () + unitLng));clearTimeout (window.mapMoveTimer);window.mapMoveTimer = setTimeout (function () {mapMove (map, unitLat, unitLng, unitCount + 1, unit, callback);}, 25);} else {if (callback)callback (map);}}
+function mapGo (map, will, callback) {var now = map.center;var Unit = getUnit (will, now);if (!Unit)return false;mapMove (map, Unit.lat, Unit.lng, 0, Unit.unit, callback);}
+
+$(function () {
+  var $body = $('body');
+  $('#m, #c').click (function () { $body.toggleClass ('s'); });
+  $('#ss, #sc').click (function () { $body.toggleClass ('ss'); });
+  var $map = $('#mm');
+  var $myPosition = $('#i');
+  var $s = $('#s').click (function () {
+    window.open ('https://www.facebook.com/sharer/sharer.php?u=' + window.location.href, '分享至臉書！', 'scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,top=100,left=' + (window.screen ? Math.round(screen.width / 2 - 275) : 100));
+  });
+  var _map = null;
+  var _heatmap = null;
+  var _markers = [];
+  var _myMarker = null;
+  var _polyline = null;
+  var _latlngs = 0;
+  var _infos = [];
+  var _timer = null;
+  var _isMove = false;
+  var _v = 0;
+  var _c = 0;
+  var _cl = 20;
+  var $length = $('#ll');
+  var $mmm = $('#mmm');
+  var $ss = $('#ss');
+
+  function circlePath (r) { return 'M 0 0 m -' + r + ', 0 '+ 'a ' + r + ',' + r + ' 0 1,0 ' + (r * 2) + ',0 ' + 'a ' + r + ',' + r + ' 0 1,0 -' + (r * 2) + ',0';}
+  function calculateLength (points) { var size = Math.pow (10, 2); if (google.maps.geometry.spherical) { var l = Math.round (google.maps.geometry.spherical.computeLength (points) / 1000 * size) / size; if (l > 0) $length.text (l); }}
+  function myPositionPath (r) { return 'M 0 0 m -' + r + ', 0 '+ 'a ' + r + ',' + r + ' 0 1,0 ' + (r * 2) + ',0 ' + 'a ' + r + ',' + r + ' 0 1,0 -' + (r * 2) + ',0' + 'M -' + (r + r / 2) + ' 0 L -' + (r / 2) + ' 0' + 'M 0 -' + (r + r / 2) + ' L 0 -' + (r / 2) + 'M ' + (r + r / 2) + ' 0 L ' + (r / 2) + ' 0' + 'M 0 ' + (r + r / 2) + ' L 0 ' + (r / 2); }
+
+  function setLoation (a, n) {
+    $.ajax ({
+      url: _url2,
+      data: { a: a, n: n },
+      async: true, cache: false, dataType: 'json', type: 'POST',
+    });
+  }
+  function loadHeatmap (text, isRoop) {
+    if (isRoop && _heatmap) return;
+
+    if ($ss.data ('val') < 0) {
+      if (!_heatmap) {
+        _heatmap = new google.maps.visualization.HeatmapLayer ({
+          map: _map,
+          radius: 20,
+          opacity: 0.9
+        });
+        $ss.addClass ('s').find ('a').click (function () {
+              $(this).addClass ('a').siblings ().removeClass ('a');
+              $ss.data ('val', $(this).data ('val'));
+              loadHeatmap ($(this).text ());
+            });
+      }
+      _heatmap.setData ([]);
+      $ss.data ('val', -1).find ('span').text ('不顯示信徒分佈');
+      $ss.find ('>div>a[data-val="-1"]').addClass ('a').siblings ().removeClass ('a');
+
+      return;
+    }
+    
+    $.ajax ({
+      url: _url3 + $ss.data ('val'),
+      data: {},
+      async: true, cache: false, dataType: 'json', type: 'GET',
+      beforeSend: function () {
+        if (_heatmap) {
+          _heatmap.setData ([]);
+          $ss.find ('span').text ('取得資料中..');
+        }
+      }
+    })
+    .done (function (result) {
+      if (!result.s) {
+        _heatmap.setData ([]);
+        $ss.data ('val', -1).find ('span').text ('不顯示信徒分佈');
+        $ss.find ('>div>a[data-val="-1"]').addClass ('a').siblings ().removeClass ('a');
+        return ;
+      }
+      $ss.find ('span').text (text);
+
+      if (!_heatmap) {
+        $ss.addClass ('s').find ('a').click (function () {
+            $(this).addClass ('a').siblings ().removeClass ('a');
+            $ss.data ('val', $(this).data ('val'));
+            loadHeatmap ($(this).text ());
+            ga ('send', 'event', 'baishatun', 'heatmap');
+          });
+        _heatmap = new google.maps.visualization.HeatmapLayer ({
+          map: _map,
+          radius: 20,
+          opacity: 0.9
+        });
+      }
+      _heatmap.setData (result.q.map (function (t) { return new google.maps.LatLng (t.a, t.n); }));
+    })
+    .fail (function (result) {
+      if (_heatmap) {
+        _heatmap.setData ([]);
+        $ss.data ('val', -1).find ('span').text ('不顯示信徒分佈');
+        $ss.find ('>div>a[data-val="-1"]').addClass ('a').siblings ().removeClass ('a');
+      }
+    })
+    .complete (function (result) {});
+  }
+
+
+  function initialize () {
+    _map = new google.maps.Map ($map.get (0), {
+      zoom: 16,
+      zoomControl: true,
+      scrollwheel: true,
+      scaleControl: true,
+      mapTypeControl: false,
+      navigationControl: true,
+      streetViewControl: false,
+      disableDoubleClickZoom: true,
+      center: new google.maps.LatLng (23.569396231491233, 120.3030703338623),
+    });
+
+    _map.mapTypes.set ('map_style', new google.maps.StyledMapType ([
+      { featureType: 'transit', stylers: [{ visibility: 'simplified' }] },
+      { featureType: 'poi', stylers: [{ visibility: 'simplified' }] },
+    ]));
+    _map.setMapTypeId ('map_style');
+
+    google.maps.event.addListener (_map, 'zoom_changed', function () {
+      clearTimeout (_timer);
+      _timer = setTimeout (function () {
+        $('img[src="img/mazu.png"]').parents ('.gmnoprint').css ({'opacity': 1});
+      }, 500);
+    });
+    google.maps.event.addListener (_map, 'drag', function () {
+      _isMove = true;
+    });
+
+    $myPosition.addClass ('s').click (function () {
+      $myPosition.text ('定位中.. 請稍候..');
+      navigator.geolocation.getCurrentPosition (function (location) {
+        $myPosition.text ('我的位置');
+
+        if (!_myMarker) _myMarker = new google.maps.Marker ({ map: _map, draggable: false, optimized: false});
+        _myMarker.setPosition (new google.maps.LatLng (location.coords.latitude, location.coords.longitude));
+        _myMarker.setIcon ({path: myPositionPath (30), strokeColor: 'rgba(174, 129, 255, .8)', strokeWeight: 3, fillColor: 'rgba(174, 129, 255, .5)', fillOpacity: 0.2});
+        _map.setCenter (new google.maps.LatLng (location.coords.latitude, location.coords.longitude));
+
+        setLoation (location.coords.latitude, location.coords.longitude);
+
+      }, function () {
+        $myPosition.remove ();
+      });
+    });
+
+    var reload = function () {
+      var id = _latlngs.length ? _latlngs[_latlngs.length - 1].id : 0;
+
+      $.when ($.ajax (_url + id + '?t=' + new Date ().getTime ())).done (function (result) {
+        if (_c++ > _cl) return location.reload ();
+        if (_v === 0) _v = result.v;
+        if (_v != result.v) return location.reload ();
+        if (!(result.s && result.p.length)) return ;
+        
+        if (!$length.data ('is_init')) $length.html (result.l).data ('is_init', true);
+        
+        _latlngs = result.p.map (function (t) {
+          return {id: t.i, lat: t.a, lng: t.n, time: t.t};
+        });
+
+        _map.setCenter (new google.maps.LatLng (_latlngs[_latlngs.length - 1].lat, _latlngs[_latlngs.length - 1].lng));
+
+        if (_markers.length)
+          _markers[_markers.length - 1].setIcon ({
+            path: circlePath (6), strokeColor: 'rgba(249, 39, 114, 1)', strokeWeight: 1, fillColor: 'rgba(249, 39, 114, .8)', fillOpacity: 0.5
+          });
+
+        _markers = _markers.concat (_latlngs.map (function (t, i) {
+            if ((i % 5 === 0) && (i !== _latlngs.length - 1))
+              new MarkerWithLabel ({
+                position: new google.maps.LatLng (t.lat, t.lng),
+                draggable: false,
+                raiseOnDrag: true,
+                map: _map,
+                labelContent: '' + $.timeago (t.time),
+                labelAnchor: new google.maps.Point (0, 0),
+                labelClass: 'time',
+                icon: {path: 'M 0 0'}
+              });
+
+            var marker = new google.maps.Marker ({
+                map: _map,
+                draggable: false,
+                zIndex: t.id,
+                optimized: false,
+                position: new google.maps.LatLng (t.lat, t.lng),
+                icon: i == _latlngs.length - 1 ? 'img/mazu.png' : {
+                  path: circlePath (6),
+                  strokeColor: 'rgba(249, 39, 114, .4)',
+                  strokeWeight: 1,
+                  fillColor: 'rgba(249, 39, 114, .5)',
+                  fillOpacity: 0.5
+                }
+              });
+            return marker;
+        }));
+
+        if (!_polyline)
+          _polyline = new google.maps.Polyline ({ map: _map, strokeColor: 'rgba(249, 39, 114, .35)', strokeWeight: 5 });
+        _polyline.setPath (_markers.map (function (t) { return t.position; }));
+        
+        if (!_isMove) mapGo (_map, new google.maps.LatLng (_latlngs[_latlngs.length - 1].lat, _latlngs[_latlngs.length - 1].lng));
+        
+        $mmm.addClass ('h');
+        setTimeout (calculateLength.bind (this, _markers.map (function (t) { return t.position; })), 1800);
+
+        loadHeatmap ('不顯示信徒分佈', 1);
+
+        _infos.forEach (function (t) { if (t) t.setMap (null); });
+        _infos = [];
+        _infos = result.i.map (function (t) {
+          return new MarkerWithLabel ({
+            zIndex: 1,
+            draggable: false,
+            raiseOnDrag: false,
+            clickable: false,
+            optimized: false,
+            labelContent: '<div class="c"><div>' + t.m.map (function (u) {return '<span>' + u + '</span>';}).join ('') + '</div></div><div class="b"></div>',
+            labelAnchor: new google.maps.Point (130 / 2, 37 + 20 - 4 + (t.m.length - 1) * 23),
+            labelClass: 'i ' + 'n' + t.m.length,
+            icon: {path: 'M 0 0'},
+            map: _map,
+            position: new google.maps.LatLng (t.a, t.n)
+          });
+        });
+        
+        clearTimeout (_timer);
+        _timer = setTimeout (function () {
+          $('img[src="img/mazu.png"]').parents ('.gmnoprint').css ({'opacity': 1});
+        }, 2000);
+
+      });
+    };
+
+    reload ();
+    setInterval (reload, 60000);
+  }
+
+  google.maps.event.addDomListener (window, 'load', initialize);
+});
