@@ -196,7 +196,7 @@ $(function () {
 
         if (_markers.length)
           _markers[_markers.length - 1].setIcon ({
-            path: circlePath (6), strokeColor: 'rgba(249, 39, 114, 1)', strokeWeight: 1, fillColor: 'rgba(249, 39, 114, .8)', fillOpacity: 0.5
+            path: circlePath (4), strokeColor: 'rgba(249, 39, 114, 1)', strokeWeight: 1, fillColor: 'rgba(249, 39, 114, .8)', fillOpacity: 0.5
           });
 
         _markers = _markers.concat (_latlngs.map (function (t, i) {
