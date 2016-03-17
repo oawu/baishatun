@@ -172,25 +172,6 @@ $(function () {
         
         if (!$length.data ('is_init')) $length.html (result.l).data ('is_init', true);
         
-        _infos.forEach (function (t) { if (t) t.setMap (null); });
-        _infos = [];
-        _infos = result.i.map (function (t) {
-
-          return new MarkerWithLabel ({
-            zIndex: 1,
-            draggable: false,
-            raiseOnDrag: false,
-            clickable: false,
-            optimized: false,
-            labelContent: '<div class="c"><div>' + t.m.map (function (u) {return '<span>' + u + '</span>';}).join ('') + '</div></div><div class="b"></div>',
-            labelAnchor: new google.maps.Point (130 / 2, 37 + 20 - 4 + (t.m.length - 1) * 23),
-            labelClass: 'i ' + 'n' + t.m.length,
-            icon: {path: 'M 0 0'},
-            map: _map,
-            position: new google.maps.LatLng (t.a, t.n)
-          });
-        });
-
         _latlngs = result.p.map (function (t) {
           return {id: t.i, lat: t.a, lng: t.n, time: t.t};
         });
@@ -242,11 +223,29 @@ $(function () {
         setTimeout (calculateLength.bind (this, _markers.map (function (t) { return t.position; })), 1800);
 
         loadHeatmap ('不顯示信徒分佈', 1);
+
+        _infos.forEach (function (t) { if (t) t.setMap (null); });
+        _infos = [];
+        _infos = result.i.map (function (t) {
+          return new MarkerWithLabel ({
+            zIndex: 1,
+            draggable: false,
+            raiseOnDrag: false,
+            clickable: false,
+            optimized: false,
+            labelContent: '<div class="c"><div>' + t.m.map (function (u) {return '<span>' + u + '</span>';}).join ('') + '</div></div><div class="b"></div>',
+            labelAnchor: new google.maps.Point (130 / 2, 37 + 20 - 4 + (t.m.length - 1) * 23),
+            labelClass: 'i ' + 'n' + t.m.length,
+            icon: {path: 'M 0 0'},
+            map: _map,
+            position: new google.maps.LatLng (t.a, t.n)
+          });
+        });
       });
     };
 
     reload ();
-    setInterval (reload, 45000);
+    setInterval (reload, 60000);
   }
 
   google.maps.event.addDomListener (window, 'load', initialize);
