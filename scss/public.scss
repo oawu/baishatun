@@ -583,8 +583,12 @@ $aw: 20px;
     content: 'Ｚ';
     font-weight: bold;
     display: inline-block;
-    border: 1px solid rgba(104, 138, 183, 1);
-    height: 20px;
+    border: 2px solid rgba(104, 138, 183, .7);
+    height: 23px;
     font-size: 16px;
+    line-height: 21px;
+    @include border-radius(2px);
+    @include transform(scale(.9));
+    margin-right: 6px !important;
   }
 }
