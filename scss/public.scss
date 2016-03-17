@@ -288,6 +288,7 @@ body {
   padding: 3px 5px;
   width: 100px;
   font-size: small;
+  text-align: center;
   @include opacity(.8);
   @include overflow-docx3();
   @include border-radius(3px);
