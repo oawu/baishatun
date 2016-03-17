@@ -101,7 +101,7 @@ $(function () {
             $(this).addClass ('a').siblings ().removeClass ('a');
             $ss.data ('val', $(this).data ('val'));
             loadHeatmap ($(this).text ());
-            ga ('send', 'event', 'baishatun', 'heatmap');
+            ga ('send', 'event', 'baishatun', 'heatmap', $(this).text ());
           });
         _heatmap = new google.maps.visualization.HeatmapLayer ({
           map: _map,
