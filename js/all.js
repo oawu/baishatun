@@ -41,6 +41,7 @@ $(function () {
   var $length = $('#ll');
   var $mmm = $('#mmm');
   var $ss = $('#ss');
+  var _times = [];
 
   function circlePath (r) { return 'M 0 0 m -' + r + ', 0 '+ 'a ' + r + ',' + r + ' 0 1,0 ' + (r * 2) + ',0 ' + 'a ' + r + ',' + r + ' 0 1,0 -' + (r * 2) + ',0';}
   function calculateLength (points) { var size = Math.pow (10, 2); if (google.maps.geometry.spherical) { var l = Math.round (google.maps.geometry.spherical.computeLength (points) / 1000 * size) / size; if (l > 0) $length.text (l); }}
@@ -146,6 +147,14 @@ $(function () {
       _timer = setTimeout (function () {
         $('img[src="img/mazu.png"]').parents ('.gmnoprint').css ({'opacity': 1});
       }, 500);
+
+      _map.zoom < 14 ? 
+        _map.zoom < 13 ? 
+          _map.zoom < 12 ? 
+            _times.forEach (function (t, i) { t.setMap (i % 4 ? null : _map); }) : 
+          _times.forEach (function (t, i) { t.setMap (i % 3 ? null : _map); }) : 
+        _times.forEach (function (t, i) { t.setMap (i % 2 ? null : _map); }) : 
+      _times.forEach (function (t, i) { t.setMap (_map); });
     });
     google.maps.event.addListener (_map, 'drag', function () {
       _isMove = true;
@@ -192,16 +201,16 @@ $(function () {
 
         _markers = _markers.concat (_latlngs.map (function (t, i) {
             if ((i % 5 === 0) && (i !== _latlngs.length - 1))
-              new MarkerWithLabel ({
-                position: new google.maps.LatLng (t.lat, t.lng),
-                draggable: false,
-                raiseOnDrag: true,
-                map: _map,
-                labelContent: '' + $.timeago (t.time),
-                labelAnchor: new google.maps.Point (0, 0),
-                labelClass: 'time',
-                icon: {path: 'M 0 0'}
-              });
+              _times.push (new MarkerWithLabel ({
+                              position: new google.maps.LatLng (t.lat, t.lng),
+                              draggable: false,
+                              raiseOnDrag: true,
+                              map: _map,
+                              labelContent: '' + $.timeago (t.time),
+                              labelAnchor: new google.maps.Point (0, 0),
+                              labelClass: 'time',
+                              icon: {path: 'M 0 0'}
+                            }));
 
             var marker = new google.maps.Marker ({
                 map: _map,
@@ -210,7 +219,7 @@ $(function () {
                 optimized: false,
                 position: new google.maps.LatLng (t.lat, t.lng),
                 icon: i == _latlngs.length - 1 ? 'img/mazu.png' : {
-                  path: circlePath (6),
+                  path: circlePath (4),
                   strokeColor: 'rgba(249, 39, 114, .4)',
                   strokeWeight: 1,
                   fillColor: 'rgba(249, 39, 114, .5)',
