@@ -578,3 +578,13 @@ $aw: 20px;
     }
   }
 }
+.z {
+  &:before {
+    content: 'Ｚ';
+    font-weight: bold;
+    display: inline-block;
+    border: 1px solid rgba(104, 138, 183, 1);
+    height: 20px;
+    font-size: 16px;
+  }
+}
