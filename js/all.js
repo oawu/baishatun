@@ -139,7 +139,7 @@ $(function () {
       if (first) $lt.addClass ('ok');
       if (!result.s) return;
       $ltl.append ($('<time />').text ($.timeago (result.t))).append (result.m.map (function (t) {
-        return $('<div />').addClass ('icon-user2').append ($('<span />').text (t.m))
+        return $('<div />').addClass ('icon-user2').attr ('data-ip', t.i).append ($('<span />').text (t.m))
       }));
       if (send) _isLoadMsg = true;
     });
