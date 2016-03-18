@@ -92,6 +92,7 @@ $(function () {
       ;
 
   $main.find ('.main').click (function () {
+    setStorage (_storage_key1, 2);
     setStorage (_storage_key2, true);
   });
 
