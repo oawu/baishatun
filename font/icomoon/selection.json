@@ -47,11 +47,11 @@
 				{}
 			],
 			"properties": {
-				"order": 17,
+				"order": 22,
 				"id": 142,
 				"prevSize": 24,
 				"code": 57486,
-				"name": "access_time",
+				"name": "at",
 				"ligatures": "access_time"
 			},
 			"setIdx": 5,
@@ -329,6 +329,40 @@
 			"setIdx": 9,
 			"setId": 14,
 			"iconIdx": 16
+		},
+		{
+			"icon": {
+				"paths": [
+					"M384 512c-212 0-384 172-384 384 0 70.752 57.248 128 128 128h512c70.752 0 128-57.248 128-128 0-212-172-384-384-384zM192 192c0-106.039 85.961-192 192-192s192 85.961 192 192c0 106.039-85.961 192-192 192s-192-85.961-192-192z"
+				],
+				"attrs": [
+					{
+						"fill": "rgb(0, 0, 0)"
+					}
+				],
+				"isMulticolor": false,
+				"width": 768,
+				"tags": [
+					"user2"
+				],
+				"defaultCode": 58897,
+				"grid": 0
+			},
+			"attrs": [
+				{
+					"fill": "rgb(0, 0, 0)"
+				}
+			],
+			"properties": {
+				"id": 17,
+				"order": 21,
+				"prevSize": 32,
+				"code": 58897,
+				"name": "user2"
+			},
+			"setIdx": 9,
+			"setId": 14,
+			"iconIdx": 17
 		},
 		{
 			"icon": {

@@ -13,6 +13,7 @@
   @include font-smoothing(antialiased);
 }
 
+
 .icon-checkmark:before {
     content: "\e900";
 }
@@ -45,6 +46,9 @@
 }
 .icon-user:before {
     content: "\e610";
+}
+.icon-user2:before {
+    content: "\e611";
 }
 .icon-triangle-down2:before {
     content: "\e61f";
@@ -266,7 +270,7 @@ body {
         @include opacity(0);
       }
       div {
-        height: 30px * 5 + 10px;
+        height: 30px * 6 + 10px;
         @include opacity(1);
       }
     }

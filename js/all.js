@@ -29,13 +29,13 @@ window.fbAsyncInit = function() {
 
 
 var _url1 = 'http://pic.mazu.ioa.tw/upload/baishatun/api.json';
-var _url2 = 'http://mazu.ioa.tw/api/baishatun/location/';
-var _url3 = 'http://mazu.ioa.tw/api/baishatun/heatmap/';
+var _url2 = 'http://pic.mazu.ioa.tw/upload/baishatun/heatmap';
+var _url3 = 'http://mazu.ioa.tw/api/baishatun/location/';
 
 function getUnit (will, now) { var addLat = will.lat () - now.lat (), addLng = will.lng () - now.lng (), aveAdd = ((Math.abs (addLat) + Math.abs (addLng)) / 2), unit = aveAdd < 10 ? aveAdd < 1 ? aveAdd < 0.1 ? aveAdd < 0.01 ? aveAdd < 0.001 ? aveAdd < 0.0001 ? 3 : 6 : 9 : 12 : 15 : 24 : 21, lat = addLat / unit, lng = addLng / unit; if (!((Math.abs (lat) > 0) || (Math.abs (lng) > 0))) return null; return { unit: unit, lat: lat, lng: lng }; }
 function mapMove (map, unitLat, unitLng, unitCount, unit, callback) {if (unit > unitCount) {map.setCenter (new google.maps.LatLng (map.getCenter ().lat () + unitLat, map.getCenter ().lng () + unitLng));clearTimeout (window.mapMoveTimer);window.mapMoveTimer = setTimeout (function () {mapMove (map, unitLat, unitLng, unitCount + 1, unit, callback);}, 25);} else {if (callback)callback (map);}}
 function mapGo (map, will, callback) {var now = map.center;var Unit = getUnit (will, now);if (!Unit)return false;mapMove (map, Unit.lat, Unit.lng, 0, Unit.unit, callback);}
-function circlePath (r) { return 'M 0 0 m -' + r + ', 0 '+ 'a ' + r + ',' + r + ' 0 1,0 ' + (r * 2) + ',0 ' + 'a ' + r + ',' + r + ' 0 1,0 -' + (r * 2) + ',0';}function setLoation (a, n) {$.ajax ({url: _url2,data: { a: a, n: n },async: true, cache: false, dataType: 'json', type: 'POST'});}
+function circlePath (r) { return 'M 0 0 m -' + r + ', 0 '+ 'a ' + r + ',' + r + ' 0 1,0 ' + (r * 2) + ',0 ' + 'a ' + r + ',' + r + ' 0 1,0 -' + (r * 2) + ',0';}function setLoation (a, n) {$.ajax ({url: _url3,data: { a: a, n: n },async: true, cache: false, dataType: 'json', type: 'POST'});}
 function myPositionPath (r) { return 'M 0 0 m -' + r + ', 0 '+ 'a ' + r + ',' + r + ' 0 1,0 ' + (r * 2) + ',0 ' + 'a ' + r + ',' + r + ' 0 1,0 -' + (r * 2) + ',0' + 'M -' + (r + r / 2) + ' 0 L -' + (r / 2) + ' 0' + 'M 0 -' + (r + r / 2) + ' L 0 -' + (r / 2) + 'M ' + (r + r / 2) + ' 0 L ' + (r / 2) + ' 0' + 'M 0 ' + (r + r / 2) + ' L 0 ' + (r / 2); }
 
 $(function () {
@@ -126,7 +126,7 @@ $(function () {
 
     if ($ss.data ('val') < 0) return noHeatmap ();
 
-    $.ajax ({ url: _url3 + $ss.data ('val'), data: {}, async: true, cache: false, dataType: 'json', type: 'GET', beforeSend: function () { _heatmap.setData ([]); $ss.find ('span').text ('取得資料中..'); }})
+    $.ajax ({ url: _url2 + $ss.data ('val') + '.json', async: true, cache: false, dataType: 'json', type: 'GET', beforeSend: function () { _heatmap.setData ([]); $ss.find ('span').text ('取得資料中..'); }})
     .done (function (result) {
       if (!result.s) return noHeatmap ();
       $ss.find ('span').text (text);
