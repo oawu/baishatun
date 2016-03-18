@@ -32,6 +32,22 @@ var _url1 = 'http://pic.mazu.ioa.tw/upload/baishatun/api.json';
 var _url2 = 'http://pic.mazu.ioa.tw/upload/baishatun/heatmap';
 var _url3 = 'http://mazu.ioa.tw/api/baishatun/location/';
 
+var _storage_key1 = 'bst_tip_cnt';
+var _storage_key2 = 'bst_fb_page';
+
+function getStorage (key) {
+  if ((typeof (Storage) !== 'undefined') && (last = localStorage.getItem (key)) && (last = JSON.parse (last)))
+    return last;
+  else
+    return;
+}
+
+function setStorage (key, data) {
+  if (typeof (Storage) !== 'undefined') {
+    localStorage.setItem (key, JSON.stringify (data));
+  }
+}
+
 function getUnit (will, now) { var addLat = will.lat () - now.lat (), addLng = will.lng () - now.lng (), aveAdd = ((Math.abs (addLat) + Math.abs (addLng)) / 2), unit = aveAdd < 10 ? aveAdd < 1 ? aveAdd < 0.1 ? aveAdd < 0.01 ? aveAdd < 0.001 ? aveAdd < 0.0001 ? 3 : 6 : 9 : 12 : 15 : 24 : 21, lat = addLat / unit, lng = addLng / unit; if (!((Math.abs (lat) > 0) || (Math.abs (lng) > 0))) return null; return { unit: unit, lat: lat, lng: lng }; }
 function mapMove (map, unitLat, unitLng, unitCount, unit, callback) {if (unit > unitCount) {map.setCenter (new google.maps.LatLng (map.getCenter ().lat () + unitLat, map.getCenter ().lng () + unitLng));clearTimeout (window.mapMoveTimer);window.mapMoveTimer = setTimeout (function () {mapMove (map, unitLat, unitLng, unitCount + 1, unit, callback);}, 25);} else {if (callback)callback (map);}}
 function mapGo (map, will, callback) {var now = map.center;var Unit = getUnit (will, now);if (!Unit)return false;mapMove (map, Unit.lat, Unit.lng, 0, Unit.unit, callback);}
@@ -40,16 +56,23 @@ function myPositionPath (r) { return 'M 0 0 m -' + r + ', 0 '+ 'a ' + r + ',' + 
 
 $(function () {
   var $body = $('body');
-  $('#m, #c').click (function () { $body.toggleClass ('s'); });
+  $('#c').click (function () { $body.toggleClass ('s'); });
   $('#sc').click (function () { $body.toggleClass ('ss'); });
   $('#s').click (function () { window.open ('https://www.facebook.com/sharer/sharer.php?u=' + window.location.href, '分享至臉書！', 'scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,top=100,left=' + (window.screen ? Math.round(screen.width / 2 - 275) : 100)); });
+  $('#m').click (function () {
+    $body.toggleClass ('s');
+    var c = getStorage (_storage_key1);
+    c = c ? c + 1 : 1;
+    setStorage (_storage_key1, c);
+  });
 
   var $map = $('#mm'),
       $myPosition = $('#i'),
       $traffic = $('#t'),
       $length = $('#ll'),
       $mmm = $('#mmm'),
-      $ss = $('#ss').click (function () { $body.toggleClass ('ss'); });
+      $ss = $('#ss').click (function () { $body.toggleClass ('ss'); }),
+      $main = $('#main');
 
   var _map = null,
       _timer = null,
@@ -65,8 +88,12 @@ $(function () {
       _polyline = null,
       _id = 0,
       _heatmap = null,
-      _trafficLayer = null;
+      _trafficLayer = null
       ;
+
+  $main.find ('.main').click (function () {
+    setStorage (_storage_key2, true);
+  });
 
   function fixZindex (t) {
     clearTimeout (_timer);
@@ -184,11 +211,20 @@ $(function () {
     });
   }
 
+  function initTip () {
+    if (!getStorage (_storage_key2))
+      $main.append ($('<span />').text ('點個讚，掌握即時位置!'));
+
+    var c = getStorage (_storage_key1);
+    if (!c || c < 2) 
+      $body.append ($('<div />').attr ('id', 'in').text ('有新功能喔！'));
+  }
   function initialize () {
     initMap ();
     initMyPosition ();
     initTrafficLayer ();
     loadData (true);
+    initTip ();
     setInterval (loadData, 50000);
   }
   

@@ -1,0 +1,83 @@
+/**
+ * @author      OA Wu <comdan66@gmail.com>
+ * @copyright   Copyright (c) 2016 OA Wu Design
+ */
+
+@import "_oa";
+
+#l {
+  > span.t {
+    margin-top: 30px;
+  }
+  label {
+    position: relative;
+
+    .main {
+      &:before {
+        display: inline-block;
+        color: rgba(173, 47, 42, 1);
+        @include transition(all .3s);
+        @include opacity(.4);      
+        @include scale(1);
+        @include animation(_h_c .5s infinite);
+        @include keyframes(_h_c){
+          0% {  @include opacity(.4); @include scale(1); }
+          50% {  @include opacity(1); @include scale(1.1); }
+          100% {  @include opacity(.4); @include scale(1); }
+        }
+      }
+
+      + span {
+        position: absolute;
+        left: 35px;
+        display: inline-block;
+        color: rgba(255, 255, 255, 1);
+        
+        font-size: 10px;
+        padding: 2px;
+        background-color: rgba(224, 87, 77, 1);
+        border: 1px solid rgba(173, 47, 42, 1);
+        bottom: -24px;
+        @include border-radius(2px);
+        @include opacity(.8);
+        @include transition(bottom .3s);
+        @include animation(_h_a 1s infinite);
+        @include keyframes(_h_a){
+          0% {  bottom: -24px; }
+          50% {  bottom: -20px; }
+          100% {  bottom: -24px; }
+        }
+
+        &:after, &:before {bottom: 100%;left: 10%;border: solid transparent;content: " ";height: 0;width: 0;position: absolute;pointer-events: none;}
+        &:after {border-color: transparent;border-bottom-color: rgba(224, 87, 77, 1);border-width: 5px;margin-left: -5px;}
+        &:before {border-color: rgba(194, 225, 245, 0);border-bottom-color: rgba(173, 47, 42, 1);border-width: 6px;margin-left: -6px;}
+      }
+    }
+  }
+}
+
+#in {
+  position: fixed;
+  top: 50px + 5px;
+  left: 5px;
+  display: inline-block;
+  z-index: 9;
+  padding: 2px;
+  border: 1px solid rgba(173, 47, 42, 1);
+  background-color: rgba(224, 87, 77, 1);
+  font-size: 10px;
+  color: rgba(255, 255, 255, 1);
+  @include border-radius(2px);
+  @include opacity(.8);
+  @include transition(top .3s);
+  @include animation(_h_i 1s infinite);
+  @include keyframes(_h_i){
+    0% { top: 50px + 5px; }
+    50% { top: 54px + 5px; }
+    100% { top: 50px + 5px; }
+  }
+
+  &:after, &:before {bottom: 100%;left: 18px;border: solid transparent;content: " ";height: 0;width: 0;position: absolute;pointer-events: none;}
+  &:after {border-color: transparent;border-bottom-color: rgba(224, 87, 77, 1);border-width: 5px;margin-left: -5px;}
+  &:before {border-color: rgba(194, 225, 245, 0);border-bottom-color: rgba(173, 47, 42, 1);border-width: 6px;margin-left: -6px;}        
+}
