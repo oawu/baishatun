@@ -296,10 +296,23 @@ body {
   @include transition(all .3s);
   @include box-shadow(0 0 15px 1px rgba(0, 0, 0, 0.2));
 }
+#t {
+  @include button('pink');
+  position: fixed;
+  bottom: 10px;
+  right: 50px;
+  @media screen and (min-width: 0px) and (max-width: #{$mediaMobileWidth - 1px}) {
+    right: 45px;
+  }
+  display: none;
+  &.s {
+    display: inline-block;
+  }
+}
 #i {
   @include button;
   position: fixed;
-  bottom: 10px;
+  bottom: 50px;
   right: 50px;
   @media screen and (min-width: 0px) and (max-width: #{$mediaMobileWidth - 1px}) {
     right: 45px;

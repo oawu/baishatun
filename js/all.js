@@ -46,6 +46,7 @@ $(function () {
 
   var $map = $('#mm'),
       $myPosition = $('#i'),
+      $traffic = $('#t'),
       $length = $('#ll'),
       $mmm = $('#mmm'),
       $ss = $('#ss').click (function () { $body.toggleClass ('ss'); });
@@ -63,7 +64,9 @@ $(function () {
       _markers = [],
       _polyline = null,
       _id = 0,
-      _heatmap = null;
+      _heatmap = null,
+      _trafficLayer = null;
+      ;
 
   function fixZindex (t) {
     clearTimeout (_timer);
@@ -100,6 +103,21 @@ $(function () {
         _map.setCenter (new google.maps.LatLng (location.coords.latitude, location.coords.longitude));
         setLoation (location.coords.latitude, location.coords.longitude);
       }.bind ($(this)), function () { $(this).remove (); }.bind ($(this)));
+    });
+  }
+
+  function initTrafficLayer () {
+    $traffic.addClass ('s').click (function () {
+      if (!_trafficLayer)
+        _trafficLayer = new google.maps.TrafficLayer ();
+      
+      if (!$(this).data ('isOn')) {
+        _trafficLayer.setMap (_map);
+        $(this).data ('isOn', true).text ('關閉路況');
+      } else {
+        _trafficLayer.setMap (null);
+        $(this).data ('isOn', false).text ('開啟路況');
+      }
     });
   }
 
@@ -165,10 +183,11 @@ $(function () {
       }
     });
   }
-  
+
   function initialize () {
     initMap ();
     initMyPosition ();
+    initTrafficLayer ();
     loadData (true);
     setInterval (loadData, 50000);
   }
