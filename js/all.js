@@ -88,11 +88,12 @@ $(function () {
       _polyline = null,
       _id = 0,
       _heatmap = null,
-      _trafficLayer = null
+      _trafficLayer = null,
+      _lsc = 4
       ;
 
   $main.find ('.main').click (function () {
-    setStorage (_storage_key1, 2);
+    setStorage (_storage_key1, _lsc);
     setStorage (_storage_key2, true);
   });
 
@@ -217,7 +218,7 @@ $(function () {
       $main.append ($('<span />').text ('點個讚，掌握即時位置!'));
 
     var c = getStorage (_storage_key1);
-    if (!c || c < 2) {
+    if (!c || c < _lsc) {
       $body.append ($('<div />').attr ('id', 'in').text ('有新功能喔！'));
       $m.addClass ('t');
     }
