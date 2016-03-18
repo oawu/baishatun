@@ -677,8 +677,12 @@ $aw: 20px;
 
 #in {
   position: fixed;
-  top: 50px + 5px;
-  left: 5px;
+  top: 55px + 5px;
+  left: 10px;
+  @media screen and (min-width: 0px) and (max-width: #{$mediaMobileWidth - 1px}) {
+    top: 50px + 5px;
+    left: 5px;
+  }
   display: inline-block;
   z-index: 9;
   padding: 2px;
@@ -689,14 +693,47 @@ $aw: 20px;
   @include border-radius(2px);
   @include opacity(.8);
   @include transition(top .3s);
-  @include animation(_h_i 1s infinite);
-  @include keyframes(_h_i){
-    0% { top: 50px + 5px; }
-    50% { top: 54px + 5px; }
-    100% { top: 50px + 5px; }
+  @media screen and (min-width: #{$mediaMobileWidth}) {
+    @include animation(_h_i 1s infinite);
+    @include keyframes(_h_i){
+      0% { top: 55px + 5px; }
+      50% { top: 59px + 5px; }
+      100% { top: 55px + 5px; }
+    }
+  }
+  @media screen and (min-width: 0px) and (max-width: #{$mediaMobileWidth - 1px}) {
+    @include animation(_h_i 1s infinite);
+    @include keyframes(_h_i){
+      0% { top: 50px + 5px; }
+      50% { top: 54px + 5px; }
+      100% { top: 50px + 5px; }
+    }
   }
 
   &:after, &:before {bottom: 100%;left: 18px;border: solid transparent;content: " ";height: 0;width: 0;position: absolute;pointer-events: none;}
   &:after {border-color: transparent;border-bottom-color: rgba(224, 87, 77, 1);border-width: 5px;margin-left: -5px;}
   &:before {border-color: rgba(194, 225, 245, 0);border-bottom-color: rgba(173, 47, 42, 1);border-width: 6px;margin-left: -6px;}        
+}
+#m.t {
+  &:after {
+    content: '';
+    position: absolute;
+    left: calc(50% - 5px);
+    top: calc(50% - 5px);
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-color: rgba(39, 40, 34, .2);
+    z-index: 1;
+    @include border-radius(50%);
+    @include scale(0);
+    @include opacity(0);
+    @include animation(_m_t 1s infinite);
+    @include keyframes(_m_t){
+      0% { @include scale(0);@include opacity(0); }
+      1% { @include scale(4);@include opacity(0); }
+      2% { @include scale(4);@include opacity(1); }
+      100% { @include scale(5.5);@include opacity(0); }
+    }
+  }
 }

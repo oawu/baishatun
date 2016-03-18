@@ -59,7 +59,7 @@ $(function () {
   $('#c').click (function () { $body.toggleClass ('s'); });
   $('#sc').click (function () { $body.toggleClass ('ss'); });
   $('#s').click (function () { window.open ('https://www.facebook.com/sharer/sharer.php?u=' + window.location.href, '分享至臉書！', 'scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,top=100,left=' + (window.screen ? Math.round(screen.width / 2 - 275) : 100)); });
-  $('#m').click (function () {
+  var $m = $('#m').click (function () {
     $body.toggleClass ('s');
     var c = getStorage (_storage_key1);
     c = c ? c + 1 : 1;
@@ -216,8 +216,10 @@ $(function () {
       $main.append ($('<span />').text ('點個讚，掌握即時位置!'));
 
     var c = getStorage (_storage_key1);
-    if (!c || c < 2) 
+    if (!c || c < 2) {
       $body.append ($('<div />').attr ('id', 'in').text ('有新功能喔！'));
+      $m.addClass ('t');
+    }
   }
   function initialize () {
     initMap ();
