@@ -89,7 +89,7 @@ $(function () {
       _id = 0,
       _heatmap = null,
       _trafficLayer = null,
-      _lsc = 4
+      _lsc = 20
       ;
 
   $main.find ('.main').click (function () {
