@@ -32,7 +32,7 @@ var _url1 = 'http://pic.mazu.ioa.tw/upload/baishatun/api.json';
 var _url2 = 'http://pic.mazu.ioa.tw/upload/baishatun/heatmap';
 var _url3 = 'http://pic.mazu.ioa.tw/upload/baishatun/mags.json';
 var _url4 = 'http://mazu.ioa.tw/api/baishatun/location/';
-var _url5 = 'http://dev.mazu.ioa.tw/api/baishatun/mag';
+var _url5 = 'http://mazu.ioa.tw/api/baishatun/mag';
 
 var _storage_key1 = 'bst_tip_cnt';
 var _storage_key2 = 'bst_fb_page';
@@ -60,8 +60,7 @@ function myPositionPath (r) { return 'M 0 0 m -' + r + ', 0 '+ 'a ' + r + ',' + 
 $(function () {
   var $body = $('body');
 
-  var $m = $('#m').click (function () { $body.toggleClass ('s'); }),
-      $map = $('#mm'),
+  var $map = $('#mm'),
       $myPosition = $('#i'),
       $traffic = $('#t'),
       $length = $('#ll'),
@@ -71,7 +70,8 @@ $(function () {
       $lt = $('#lt'),
       $ltl = $lt.find ('label'),
       $meg = $('#meg'),
-      $send = $('#send');
+      $send = $('#send'),
+      $m = $('#m').click (function () { $body.toggleClass ('s'); });
 
   var _map = null,
       _timer = null,
@@ -92,7 +92,7 @@ $(function () {
       _isLoadMsg = true,
       _msgTimer = null,
       _loadDataTime = 50000,
-      _loadMsgTime = 10000
+      _loadMsgTime = 15000
       ;
 
   $('#c').click (function () { $body.toggleClass ('s'); });
@@ -268,14 +268,12 @@ $(function () {
     $body.append ($('<div />').attr ('id', 'in').text ('有新功能喔！'));
   }
   function initialize () {
-    // initMap ();
-    // initMyPosition ();
-    // initTrafficLayer ();
-    // loadData (true);
-    // initTip ();
-    // setInterval (loadData, _loadDataTime);
-        $mmm.addClass ('h');
-    
+    initMap ();
+    initMyPosition ();
+    initTrafficLayer ();
+    loadData (true);
+    initTip ();
+    setInterval (loadData, _loadDataTime);
   }
   
   google.maps.event.addDomListener (window, 'load', initialize);
