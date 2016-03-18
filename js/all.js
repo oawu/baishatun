@@ -30,7 +30,9 @@ window.fbAsyncInit = function() {
 
 var _url1 = 'http://pic.mazu.ioa.tw/upload/baishatun/api.json';
 var _url2 = 'http://pic.mazu.ioa.tw/upload/baishatun/heatmap';
-var _url3 = 'http://mazu.ioa.tw/api/baishatun/location/';
+var _url3 = 'http://pic.mazu.ioa.tw/upload/baishatun/mags.json';
+var _url4 = 'http://mazu.ioa.tw/api/baishatun/location/';
+var _url5 = 'http://mazu.ioa.tw/api/baishatun/mag';
 
 var _storage_key1 = 'bst_tip_cnt';
 var _storage_key2 = 'bst_fb_page';
@@ -51,20 +53,12 @@ function setStorage (key, data) {
 function getUnit (will, now) { var addLat = will.lat () - now.lat (), addLng = will.lng () - now.lng (), aveAdd = ((Math.abs (addLat) + Math.abs (addLng)) / 2), unit = aveAdd < 10 ? aveAdd < 1 ? aveAdd < 0.1 ? aveAdd < 0.01 ? aveAdd < 0.001 ? aveAdd < 0.0001 ? 3 : 6 : 9 : 12 : 15 : 24 : 21, lat = addLat / unit, lng = addLng / unit; if (!((Math.abs (lat) > 0) || (Math.abs (lng) > 0))) return null; return { unit: unit, lat: lat, lng: lng }; }
 function mapMove (map, unitLat, unitLng, unitCount, unit, callback) {if (unit > unitCount) {map.setCenter (new google.maps.LatLng (map.getCenter ().lat () + unitLat, map.getCenter ().lng () + unitLng));clearTimeout (window.mapMoveTimer);window.mapMoveTimer = setTimeout (function () {mapMove (map, unitLat, unitLng, unitCount + 1, unit, callback);}, 25);} else {if (callback)callback (map);}}
 function mapGo (map, will, callback) {var now = map.center;var Unit = getUnit (will, now);if (!Unit)return false;mapMove (map, Unit.lat, Unit.lng, 0, Unit.unit, callback);}
-function circlePath (r) { return 'M 0 0 m -' + r + ', 0 '+ 'a ' + r + ',' + r + ' 0 1,0 ' + (r * 2) + ',0 ' + 'a ' + r + ',' + r + ' 0 1,0 -' + (r * 2) + ',0';}function setLoation (a, n) {$.ajax ({url: _url3,data: { a: a, n: n },async: true, cache: false, dataType: 'json', type: 'POST'});}
+function circlePath (r) { return 'M 0 0 m -' + r + ', 0 '+ 'a ' + r + ',' + r + ' 0 1,0 ' + (r * 2) + ',0 ' + 'a ' + r + ',' + r + ' 0 1,0 -' + (r * 2) + ',0';}
+function setLoation (a, n) {$.ajax ({url: _url4,data: { a: a, n: n },async: true, cache: false, dataType: 'json', type: 'POST'});}
 function myPositionPath (r) { return 'M 0 0 m -' + r + ', 0 '+ 'a ' + r + ',' + r + ' 0 1,0 ' + (r * 2) + ',0 ' + 'a ' + r + ',' + r + ' 0 1,0 -' + (r * 2) + ',0' + 'M -' + (r + r / 2) + ' 0 L -' + (r / 2) + ' 0' + 'M 0 -' + (r + r / 2) + ' L 0 -' + (r / 2) + 'M ' + (r + r / 2) + ' 0 L ' + (r / 2) + ' 0' + 'M 0 ' + (r + r / 2) + ' L 0 ' + (r / 2); }
 
 $(function () {
   var $body = $('body');
-  $('#c').click (function () { $body.toggleClass ('s'); });
-  $('#sc').click (function () { $body.toggleClass ('ss'); });
-  $('#s').click (function () { window.open ('https://www.facebook.com/sharer/sharer.php?u=' + window.location.href, '分享至臉書！', 'scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,top=100,left=' + (window.screen ? Math.round(screen.width / 2 - 275) : 100)); });
-  var $m = $('#m').click (function () {
-    $body.toggleClass ('s');
-    var c = getStorage (_storage_key1);
-    c = c ? c + 1 : 1;
-    setStorage (_storage_key1, c);
-  });
 
   var $map = $('#mm'),
       $myPosition = $('#i'),
@@ -72,7 +66,12 @@ $(function () {
       $length = $('#ll'),
       $mmm = $('#mmm'),
       $ss = $('#ss').click (function () { $body.toggleClass ('ss'); }),
-      $main = $('#main');
+      $main = $('#main')
+      $lt = $('#lt'),
+      $ltl = $lt.find ('label'),
+      $meg = $('#meg'),
+      $send = $('#send'),
+      $m = $('#m').click (function () { $body.toggleClass ('s'); });
 
   var _map = null,
       _timer = null,
@@ -89,13 +88,62 @@ $(function () {
       _id = 0,
       _heatmap = null,
       _trafficLayer = null,
-      _lsc = 20
+      _isLoadPath = true,
+      _isLoadMsg = true,
+      _msgTimer = null,
+      _loadDataTime = 50000,
+      _loadMsgTime = 15000
       ;
 
+  $('#c').click (function () { $body.toggleClass ('s'); });
+  $('#sc').click (function () { $body.toggleClass ('ss'); });
   $main.find ('.main').click (function () {
-    setStorage (_storage_key1, _lsc);
     setStorage (_storage_key2, true);
   });
+  $('#ct').click (function () {
+    $body.toggleClass ('t');
+    _isLoadPath = true;
+    clearInterval (_msgTimer);
+  });
+  $('#s').click (function () {
+    $body.toggleClass ('t');
+    _isLoadPath = false;
+    
+    loadMsg (true);
+    _msgTimer = setInterval (loadMsg, _loadMsgTime);
+  });
+  $send.click (function () {
+    _isLoadMsg = false;
+    var val = $meg.val ().trim ();
+    if (val.length < 1) return;
+    
+    $.ajax ({ url: _url5, data: {
+      msg: val
+    }, async: true, cache: false, dataType: 'json', type: 'POST',
+      beforeSend: function () {
+        $send.prop ('disabled', true).text ('發佈中..');
+        $meg.prop ('disabled', true);
+      }})
+    .done (function (result) {
+      $send.prop ('disabled', false).text ('確定送出');
+      $meg.prop ('disabled', false).val ('');
+    })
+    .fail (function () {})
+    .complete (function (result) {
+      loadMsg (false, true);
+    });
+  });
+  function loadMsg (first, send) {
+    $.when ($.ajax (_url3 + '?t=' + new Date ().getTime (), {dataType: 'json'})).done (function (result) {
+      $ltl.empty ();
+      if (first) $lt.addClass ('ok');
+      if (!result.s) return;
+      $ltl.append ($('<time />').text ($.timeago (result.t))).append (result.m.map (function (t) {
+        return $('<div />').addClass ('icon-user2').append ($('<span />').text (t.m))
+      }));
+      if (send) _isLoadMsg = true;
+    });
+  }
 
   function fixZindex (t) {
     clearTimeout (_timer);
@@ -171,9 +219,9 @@ $(function () {
   }
 
   function loadData (isFirst) {
-    $.when ($.ajax (_url1 + '?t=' + new Date ().getTime (), {
-      dataType: 'json'
-    })).done (function (result) {
+    if (!_isLoadPath) return;
+
+    $.when ($.ajax (_url1 + '?t=' + new Date ().getTime (), {dataType: 'json'})).done (function (result) {
       
       if (++_c > _cl) return location.reload ();
       if (_v === 0) _v = result.v;
@@ -215,13 +263,9 @@ $(function () {
 
   function initTip () {
     if (!getStorage (_storage_key2))
-      $main.append ($('<span />').text ('點個讚，掌握即時位置!'));
-
-    var c = getStorage (_storage_key1);
-    if (!c || c < _lsc) {
-      $body.append ($('<div />').attr ('id', 'in').text ('有新功能喔！'));
-      $m.addClass ('t');
-    }
+      $main.append ($('<span />').text ('點個讚，掌握即時位置!')).next ().addClass ('t');
+    
+    $body.append ($('<div />').attr ('id', 'in').text ('有新功能喔！'));
   }
   function initialize () {
     initMap ();
@@ -229,7 +273,7 @@ $(function () {
     initTrafficLayer ();
     loadData (true);
     initTip ();
-    setInterval (loadData, 50000);
+    setInterval (loadData, _loadDataTime);
   }
   
   google.maps.event.addDomListener (window, 'load', initialize);
