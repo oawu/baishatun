@@ -82,7 +82,8 @@ $(function () {
       _isLoadMsg = true,
       _msgTimer = null,
       _loadDataTime = 50000,
-      _loadMsgTime  = 15000
+      _loadMsgTime  = 15000,
+      _addresss = null
       ;
 
   $('#c').click (function () { $body.toggleClass ('s'); });
@@ -130,8 +131,8 @@ $(function () {
       $ltl.empty ();
       if (first) $lt.addClass ('ok');
       if (!result.s) return;
-      $ltl.append ($('<time />').text ($.timeago (result.t))).append (result.m.map (function (t) {
-        return $('<div />').addClass (t.a ? 'a' : '').addClass ('icon-user2').attr ('data-ip', t.i).append ($('<span />').text (t.m)).append (t.a ? $('<b />').text ('站長') : null)
+      $ltl.append ($('<div />').html ('請勿再稱白沙屯媽祖為白媽媽！<br/>這是個非盈利網站，請幫忙分享出去給更多需要的人吧！')).append (result.m.map (function (t) {
+        return $('<div />').addClass (t.a ? 'a' : '').addClass ('icon-user2').attr ('data-ip', t.i).append ($('<span />').text (t.m)).append (t.a ? $('<b />').text ('站長') : null).append ($('<time />').text ($.timeago (t.t)))
       }));
       if (send) _isLoadMsg = true;
     });
@@ -233,6 +234,15 @@ $(function () {
           if ((i % 5 === 0) && (i !== latlngs.length - 1)) _times.push (new MarkerWithLabel ({ position: new google.maps.LatLng (t.lat, t.lng), draggable: false, raiseOnDrag: true, map: _map, labelContent: '' + $.timeago (t.time), labelAnchor: new google.maps.Point (0, 0), labelClass: 'time', icon: {path: 'M 0 0'} }));
           return new google.maps.Marker ({ map: _map, zIndex: t.id, draggable: false, optimized: false, position: new google.maps.LatLng (t.lat, t.lng), icon: i == latlngs.length - 1 ? 'img/mazu.png' : { path: circlePath (4), strokeColor: 'rgba(255, 68, 170, 1)', strokeWeight: 1, fillColor: 'rgba(255, 68, 170, 1)', fillOpacity: 0.5 } });
       }));
+
+      new google.maps.Geocoder ().geocode ({'latLng': _markers[_markers.length - 1].position}, function (result, status) {
+        if (!((status == google.maps.GeocoderStatus.OK) && result.length && (result = result[0]) && result.formatted_address)) 
+          return;
+
+        if(!_addresss) _addresss = new MarkerWithLabel ({ position: _markers[_markers.length - 1].position, draggable: false, raiseOnDrag: true, map: _map, labelContent: '', labelAnchor: new google.maps.Point (0, 0), labelClass: 'address', icon: {path: 'M 0 0'} });
+        _addresss.labelContent = result.formatted_address;
+        _addresss.setPosition (_markers[_markers.length - 1].position);
+      });
 
       if (!_polyline) _polyline = new google.maps.Polyline ({ map: _map, strokeColor: 'rgba(249, 39, 114, .45)', strokeWeight: 5 });
       _polyline.setPath (_markers.map (function (t) { return t.position; }));

@@ -200,7 +200,10 @@ html {
     color: rgba(255, 255, 255, .9);
     border: 1px solid rgba(255, 255, 255, .9);
     background-color: rgba(39, 40, 34, 1);
+    cursor: pointer;
     @include border-radius(50%);
+    @include opacity(.9);
+    @include transition(all .3s);
   }
 }
 #l {
@@ -334,7 +337,7 @@ body {
   }
 }
 
-.time {
+.time, .address {
   border: 1px solid rgba(39, 40, 34, .4);
   background-color: rgba(255, 255, 255, .8);
   padding: 3px 5px;
@@ -346,6 +349,11 @@ body {
   @include border-radius(3px);
   @include transition(all .3s);
   @include box-shadow(0 0 15px 1px rgba(0, 0, 0, 0.2));
+}
+.address {
+  width: auto;
+  background-color: rgba(255, 255, 255, 1);
+  color: rgba(50, 50, 50, 0.9);
 }
 #t {
   @include button('pink');
@@ -794,7 +802,10 @@ $aw: 20px;
     color: rgba(255, 255, 255, .9);
     border: 1px solid rgba(255, 255, 255, .9);
     background-color: rgba(39, 40, 34, 1);
+    cursor: pointer;
     @include border-radius(50%);
+    @include opacity(.9);
+    @include transition(all .3s);
   }
 }
 #lt {
@@ -852,32 +863,32 @@ $aw: 20px;
     z-index: 1;
   }
   > span {
-    &:nth-child(3) {
-      text-align: left;
-      position: absolute;
-      right: 0;
-      top: $h;
-      display: inline-block;
-      padding: 5px 3px;
-      background-color: rgba(255, 255, 255, 1);
-      border-bottom: 1px solid rgba(39, 40, 34, .2);
+    // &:nth-child(3) {
+    //   text-align: left;
+    //   position: absolute;
+    //   right: 0;
+    //   top: $h;
+    //   display: inline-block;
+    //   padding: 5px 3px;
+    //   background-color: rgba(255, 255, 255, 1);
+    //   border-bottom: 1px solid rgba(39, 40, 34, .2);
 
-      width: 100%;
+    //   width: 100%;
 
-      font-size: 10px;
-      color: rgba(222, 62, 37, 1);
-      font-weight: bold;
-      word-wrap: break-word;
-      word-break: break-all;
-      a {
-        @include a;
-        display: inline;
-      }
-    }
-    &:nth-child(3) {
-      // top: $h + 15px + 12px;
-    }
-    &:nth-child(4) {
+    //   font-size: 10px;
+    //   color: rgba(222, 62, 37, 1);
+    //   font-weight: bold;
+    //   word-wrap: break-word;
+    //   word-break: break-all;
+    //   a {
+    //     @include a;
+    //     display: inline;
+    //   }
+    // }
+    // &:nth-child(3) {
+    //   // top: $h + 15px + 12px;
+    // }
+    // &:nth-child(4) {
       position: absolute;
       right: 0;
       bottom: 0;
@@ -890,7 +901,7 @@ $aw: 20px;
       @include border-top-left-radius(2px);
       font-size: 10px;
       color: rgba(50, 50, 50, 0.65);
-    }
+    // }
   }
   > div {
     display: inline-block;
@@ -926,37 +937,31 @@ $aw: 20px;
     -webkit-overflow-scrolling: touch;
     @include box-shadow(inset 0 1px 2px rgba(39, 40, 34, .3));
     
-    > time {
-      &:first-child {
-        margin-top: 75px;
-        @media screen and (min-width: #{$mediaMobileWidth}) {
-          margin-top: 58px;
-        }
+    > div:first-child {
+      margin-top: 0;
+      @media screen and (min-width: #{$mediaMobileWidth}) {
+        margin-top: 58px;
       }
       display: inline-block;
       width: 100%;
       font-size: 10px;
       color: rgba(39, 40, 34, .4);
       position: relative;
+      background-color: rgba(255, 255, 255, 1);
+      font-size: 10px;
+      color: rgba(222, 62, 37, 1);
+      font-weight: bold;
+      padding: 3px;
+      text-align: left;
+      word-wrap: break-word;
+      word-break: break-all;
+      border-bottom: 1px solid rgba(39, 40, 34, .2);
 
       + div {
         margin-top: 10px;
       }
-      &:before, &:after {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 10px;
-        height: 1px;
-        width: 20%;
-        background-color: rgba(39, 40, 34, .2);
-      }
-      &:after {
-        left: auto;
-        right: 10px;
-      }
     }
-    > div {
+    > div:not(:first-child) {
       position: relative;
       display: inline-block;
       width: 100%;
@@ -973,11 +978,13 @@ $aw: 20px;
         }
         span {
           color: rgba(222, 62, 37, 1) !important;
+          border-color: rgba(222, 62, 37, .75) !important;
+          &:before {border-right-color: rgba(222, 62, 37, .9) !important;}
         }
       }
 
       + div {
-        margin-top: 10px;
+        margin-top: 15px;
       }
       + time {
         margin-top: 5px;
@@ -986,7 +993,7 @@ $aw: 20px;
         content: attr(data-ip);
         position: absolute;
         bottom: 0;
-        right: 0;
+        left: 30px;
         display: inline-block;
         font-size: 10px;
         color: rgba(50, 50, 50, 0.5);
@@ -1016,6 +1023,14 @@ $aw: 20px;
         display: inline-block;
         font-size: 10px;
         color: rgba(235, 85, 30, 1);
+      }
+      time {
+        position: absolute;
+        right: 5px;
+        bottom: 0;
+        display: inline-block;
+        font-size: 10px;
+        color: rgba(50, 50, 50, 0.65);
       }
       span {
         position: relative;
