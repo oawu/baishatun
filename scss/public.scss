@@ -871,7 +871,6 @@ $aw: 20px;
       word-break: break-all;
       a {
         @include a;
-        padding: 0;
         display: inline;
       }
     }
