@@ -852,7 +852,8 @@ $aw: 20px;
     z-index: 1;
   }
   > span {
-    &:not(:last-child) {
+    &:nth-child(3) {
+      text-align: left;
       position: absolute;
       right: 0;
       top: $h;
@@ -866,8 +867,18 @@ $aw: 20px;
       font-size: 10px;
       color: rgba(222, 62, 37, 1);
       font-weight: bold;
+      word-wrap: break-word;
+      word-break: break-all;
+      a {
+        @include a;
+        padding: 0;
+        display: inline;
+      }
     }
-    &:last-child {
+    &:nth-child(3) {
+      // top: $h + 15px + 12px;
+    }
+    &:nth-child(4) {
       position: absolute;
       right: 0;
       bottom: 0;
@@ -918,7 +929,7 @@ $aw: 20px;
     
     > time {
       &:first-child {
-        margin-top: 35px;
+        margin-top: 88px;
       }
       display: inline-block;
       width: 100%;
