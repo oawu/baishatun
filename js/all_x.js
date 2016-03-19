@@ -33,6 +33,7 @@ var _url2 = 'http://pic.mazu.ioa.tw/upload/baishatun/heatmap';
 var _url3 = 'http://pic.mazu.ioa.tw/upload/baishatun/mags.json';
 var _url4 = 'http://mazu.ioa.tw/api/baishatun/location/';
 var _url5 = 'http://mazu.ioa.tw/api/baishatun/mag';
+var _url6 = 'http://dev.mazu.ioa.tw/api/baishatun/ip';
 
 var _storage_key1 = 'bst_tip_cnt';
 var _storage_key2 = 'bst_fb_page';
@@ -102,9 +103,9 @@ $(function () {
     setStorage (_storage_key3, true);
   });
   $send.click (function () {
-    _isLoadMsg = false;
     var val = $meg.val ().trim ();
     if (val.length < 1) return;
+    _isLoadMsg = false;
     
     $.ajax ({ url: _url5, data: {
       msg: val,
@@ -124,6 +125,29 @@ $(function () {
       loadMsg (false, true);
     });
   });
+  function black () {
+    var ip = $(this).data ('ip');
+    if (ip.length < 1) return;
+
+    _isLoadMsg = false;
+    
+    $.ajax ({ url: _url6, data: {
+      ip: ip,
+    }, async: true, cache: false, dataType: 'json', type: 'POST',
+      beforeSend: function () {
+        $send.prop ('disabled', true).text ('發佈中..');
+        $meg.prop ('disabled', true);
+      }})
+    .done (function (result) {
+      $send.prop ('disabled', false).text ('確定送出');
+      $meg.prop ('disabled', false).val ('');
+    })
+    .fail (function () {})
+    .complete (function (result) {
+      _isLoadMsg = true;
+      loadMsg (false, true);
+    });
+  }
   function loadMsg (first, send) {
     if (!_isLoadMsg || _isLoadPath) return;
 
@@ -132,7 +156,7 @@ $(function () {
       if (first) $lt.addClass ('ok');
       if (!result.s) return;
       $ltl.append ($('<time />').text ($.timeago (result.t))).append (result.m.map (function (t) {
-        return $('<div />').addClass (t.a ? 'a' : '').addClass ('icon-user2').attr ('data-ip', t.i).append ($('<span />').text (t.m)).append (t.a ? $('<b />').text ('站長') : null)
+        return $('<div />').addClass (t.a ? 'a' : '').addClass ('icon-user2').attr ('data-ip', t.i).append ($('<span />').text (t.m)).append (t.a ? $('<b />').text ('站長') : null).append ($('<a/>').text ('黑').data ('ip', t.i).click (black))
       }));
       if (send) _isLoadMsg = true;
     });
