@@ -82,7 +82,7 @@ $(function () {
       _isLoadMsg = true,
       _msgTimer = null,
       _loadDataTime = 50000,
-      _loadMsgTime = 20000
+      _loadMsgTime  = 15000
       ;
 
   $('#c').click (function () { $body.toggleClass ('s'); });
