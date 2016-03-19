@@ -265,7 +265,8 @@ $(function () {
     if (!getStorage (_storage_key2))
       $main.append ($('<span />').text ('點個讚，掌握即時位置!')).next ().addClass ('t');
     
-    $body.append ($('<div />').attr ('id', 'in').text ('有新功能喔！'));
+    $body.append ($('<div />').attr ('id', 'in1').text ('這邊可以聊天喔！'))
+         .append ($('<div />').attr ('id', 'in2').text ('有新功能喔！'));
   }
   function initialize () {
     initMap ();
