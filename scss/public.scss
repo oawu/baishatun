@@ -930,6 +930,9 @@ $aw: 20px;
     > time {
       &:first-child {
         margin-top: 88px;
+        @media screen and (min-width: #{$mediaMobileWidth}) {
+          margin-top: 58px;
+        }
       }
       display: inline-block;
       width: 100%;
