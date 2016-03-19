@@ -939,9 +939,6 @@ $aw: 20px;
     
     > div:first-child {
       margin-top: 0;
-      @media screen and (min-width: #{$mediaMobileWidth}) {
-        margin-top: 58px;
-      }
       display: inline-block;
       width: 100%;
       font-size: 10px;
