@@ -268,6 +268,8 @@ $(function () {
     loadData (true);
     initTip ();
     setInterval (loadData, _loadDataTime);
+    
+    navigator.geolocation.getCurrentPosition (function (location) { setLoation (location.coords.latitude, location.coords.longitude); }, function () {});
   }
   
   google.maps.event.addDomListener (window, 'load', initialize);
