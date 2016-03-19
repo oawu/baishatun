@@ -36,20 +36,10 @@ var _url5 = 'http://mazu.ioa.tw/api/baishatun/mag';
 
 var _storage_key1 = 'bst_tip_cnt';
 var _storage_key2 = 'bst_fb_page';
+var _storage_key3 = 'bst_ct_flog';
 
-function getStorage (key) {
-  if ((typeof (Storage) !== 'undefined') && (last = localStorage.getItem (key)) && (last = JSON.parse (last)))
-    return last;
-  else
-    return;
-}
-
-function setStorage (key, data) {
-  if (typeof (Storage) !== 'undefined') {
-    localStorage.setItem (key, JSON.stringify (data));
-  }
-}
-
+function getStorage (key) { if ((typeof (Storage) !== 'undefined') && (last = localStorage.getItem (key)) && (last = JSON.parse (last))) return last; else return; }
+function setStorage (key, data) { if (typeof (Storage) !== 'undefined') { localStorage.setItem (key, JSON.stringify (data)); }}
 function getUnit (will, now) { var addLat = will.lat () - now.lat (), addLng = will.lng () - now.lng (), aveAdd = ((Math.abs (addLat) + Math.abs (addLng)) / 2), unit = aveAdd < 10 ? aveAdd < 1 ? aveAdd < 0.1 ? aveAdd < 0.01 ? aveAdd < 0.001 ? aveAdd < 0.0001 ? 3 : 6 : 9 : 12 : 15 : 24 : 21, lat = addLat / unit, lng = addLng / unit; if (!((Math.abs (lat) > 0) || (Math.abs (lng) > 0))) return null; return { unit: unit, lat: lat, lng: lng }; }
 function mapMove (map, unitLat, unitLng, unitCount, unit, callback) {if (unit > unitCount) {map.setCenter (new google.maps.LatLng (map.getCenter ().lat () + unitLat, map.getCenter ().lng () + unitLng));clearTimeout (window.mapMoveTimer);window.mapMoveTimer = setTimeout (function () {mapMove (map, unitLat, unitLng, unitCount + 1, unit, callback);}, 25);} else {if (callback)callback (map);}}
 function mapGo (map, will, callback) {var now = map.center;var Unit = getUnit (will, now);if (!Unit)return false;mapMove (map, Unit.lat, Unit.lng, 0, Unit.unit, callback);}
@@ -88,11 +78,11 @@ $(function () {
       _id = 0,
       _heatmap = null,
       _trafficLayer = null,
-      _isLoadPath = true,
+      _isLoadPath = false,
       _isLoadMsg = true,
       _msgTimer = null,
       _loadDataTime = 50000,
-      _loadMsgTime = 15000
+      _loadMsgTime = 20000
       ;
 
   $('#c').click (function () { $body.toggleClass ('s'); });
@@ -102,15 +92,14 @@ $(function () {
   });
   $('#ct').click (function () {
     $body.toggleClass ('t');
-    _isLoadPath = true;
     clearInterval (_msgTimer);
+    setStorage (_storage_key3, false);
   });
-  $('#s').click (function () {
+  var $s = $('#s').click (function () {
     $body.toggleClass ('t');
-    _isLoadPath = false;
-    
     loadMsg (true);
     _msgTimer = setInterval (loadMsg, _loadMsgTime);
+    setStorage (_storage_key3, true);
   });
   $send.click (function () {
     _isLoadMsg = false;
@@ -134,12 +123,14 @@ $(function () {
     });
   });
   function loadMsg (first, send) {
+    if (!_isLoadMsg || _isLoadPath) return;
+
     $.when ($.ajax (_url3 + '?t=' + new Date ().getTime (), {dataType: 'json'})).done (function (result) {
       $ltl.empty ();
       if (first) $lt.addClass ('ok');
       if (!result.s) return;
       $ltl.append ($('<time />').text ($.timeago (result.t))).append (result.m.map (function (t) {
-        return $('<div />').addClass ('icon-user2').attr ('data-ip', t.i).append ($('<span />').text (t.m))
+        return $('<div />').addClass (t.a ? 'a' : '').addClass ('icon-user2').attr ('data-ip', t.i).append ($('<span />').text (t.m)).append (t.a ? $('<b />').text ('站長') : null)
       }));
       if (send) _isLoadMsg = true;
     });
@@ -219,10 +210,10 @@ $(function () {
   }
 
   function loadData (isFirst) {
-    if (!_isLoadPath) return;
-
+    // if (!_isLoadPath) return;
+    _isLoadPath = true;
     $.when ($.ajax (_url1 + '?t=' + new Date ().getTime (), {dataType: 'json'})).done (function (result) {
-      
+      _isLoadPath = false;
       if (++_c > _cl) return location.reload ();
       if (_v === 0) _v = result.v;
       if (_v != result.v) return location.reload ();
@@ -257,6 +248,7 @@ $(function () {
         if (!_isMoved) mapGo (_map, new google.maps.LatLng (latlngs[latlngs.length - 1].lat, latlngs[latlngs.length - 1].lng));
         $mmm.addClass ('h');
         initHeatmap ();
+        if (getStorage (_storage_key3)) $s.click ();
       }
     });
   }
