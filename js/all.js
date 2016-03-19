@@ -119,6 +119,7 @@ $(function () {
     })
     .fail (function () {})
     .complete (function (result) {
+      _isLoadMsg = true;
       loadMsg (false, true);
     });
   });
