@@ -958,6 +958,9 @@ $aw: 20px;
         &:before {
           border: 1px solid rgba(235, 85, 30, 1);
         }
+        span {
+          color: rgba(222, 62, 37, 1) !important;
+        }
       }
 
       + div {
@@ -1008,6 +1011,7 @@ $aw: 20px;
         word-wrap: break-word; 
         word-break: break-all;
         min-height: 21px;
+        line-height: 19px;
         background-color: rgba(255, 255, 255, 1);
         padding: 5px;
         color: rgba(50, 50, 50, 0.8);
