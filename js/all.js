@@ -131,7 +131,9 @@ $(function () {
       $ltl.empty ();
       if (first) $lt.addClass ('ok');
       if (!result.s) return;
-      $ltl.append ($('<div />').html ('請勿再稱白沙屯媽祖為白媽媽！<br/>最正確資訊請洽詢<a href="https://www.facebook.com/bstmz/" target="_blank">白沙屯拱天宮</a> 官方粉絲頁，這是非官方而且非盈利網站，請幫忙分享出去給更多需要的人吧！')).append (result.m.map (function (t) {
+      $ltl.append ($('<div />').html ('請勿再稱白沙屯媽祖為白媽媽！<br/>最正確資訊請洽詢<a href="https://www.facebook.com/bstmz/" target="_blank">白沙屯拱天宮</a> 官方粉絲頁，這是非官方而且非盈利網站，請幫忙分享出去給更多需要的人吧！'))
+          .append ($('<div />').html ('目前站上人數: ' + result.c + '人'))
+          .append (result.m.map (function (t) {
         return $('<div />').addClass (t.a ? 'a' : '').addClass ('icon-user2').attr ('data-ip', t.i).append ($('<span />').text (t.m)).append (t.a ? $('<b />').text ('站長') : null).append ($('<time />').text ($.timeago (t.t)))
       }));
       if (send) _isLoadMsg = true;
