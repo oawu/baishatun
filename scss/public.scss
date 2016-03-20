@@ -954,6 +954,10 @@ $aw: 20px;
       word-break: break-all;
       border-bottom: 1px solid rgba(39, 40, 34, .2);
 
+      a {
+        @include a;
+        display: inline;
+      }
       + div {
         margin-top: 10px;
       }
