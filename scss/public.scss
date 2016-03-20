@@ -980,6 +980,9 @@ $aw: 20px;
         left: 10px;
         height: 1px;
         width: 10%;
+        @media screen and (min-width: #{$mediaMobileWidth}) {
+          width: 25%;
+        }
         background-color: rgba(39, 40, 34, .2);
       }
       &:after {
