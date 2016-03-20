@@ -155,7 +155,7 @@ $(function () {
       $ltl.empty ();
       if (first) $lt.addClass ('ok');
       if (!result.s) return;
-      $ltl.append ($('<div />').html ('1.請勿再稱白沙屯媽祖為白媽媽！<br/>3.相關資訊請查詢<a href="https://www.facebook.com/bstmz/" target="_blank">白沙屯拱天宮</a>官方頁面。<br/>3.別亂檢舉，偏激或令人不悅的內容再檢舉！<br/>4.這是非官方而且非營利網站，請幫忙分享出去給更多需要的人吧！'))
+      $ltl.append ($('<div />').html ('1.請勿再稱白沙屯媽祖為白媽媽！<br/>2.相關資訊請查詢<a href="https://www.facebook.com/bstmz/" target="_blank">白沙屯拱天宮</a>官方頁面。<br/>3.別亂檢舉，偏激或令人不悅的內容再檢舉！<br/>4.這是非官方而且非營利網站，請幫忙分享出去給更多需要的人吧！'))
           .append ($('<div />').html ('目前聊天人數: ' + result.c + '人'))
           .append (result.m.map (function (t) {
         return $('<div />').addClass (t.a ? 'a' : '').addClass ('icon-user2').attr ('data-ip', t.i)
