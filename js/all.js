@@ -33,7 +33,7 @@ var _url2 = 'http://pic.mazu.ioa.tw/upload/baishatun/heatmap';
 var _url3 = 'http://pic.mazu.ioa.tw/upload/baishatun/mags.json';
 var _url4 = 'http://mazu.ioa.tw/api/baishatun/location/';
 var _url5 = 'http://mazu.ioa.tw/api/baishatun/mag';
-var _url6 = 'http://dev.mazu.ioa.tw/api/baishatun/to_black';
+var _url6 = 'http://mazu.ioa.tw/api/baishatun/to_black';
 
 var _storage_key1 = 'bst_tip_cnt';
 var _storage_key2 = 'bst_fb_page';
