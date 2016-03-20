@@ -33,6 +33,7 @@ var _url2 = 'http://pic.mazu.ioa.tw/upload/baishatun/heatmap';
 var _url3 = 'http://pic.mazu.ioa.tw/upload/baishatun/mags.json';
 var _url4 = 'http://mazu.ioa.tw/api/baishatun/location/';
 var _url5 = 'http://mazu.ioa.tw/api/baishatun/mag';
+var _url6 = 'http://dev.mazu.ioa.tw/api/baishatun/to_black';
 
 var _storage_key1 = 'bst_tip_cnt';
 var _storage_key2 = 'bst_fb_page';
@@ -124,6 +125,29 @@ $(function () {
       loadMsg (false, true);
     });
   });
+  function to_black () {
+    var id = $(this).data ('id');
+    if (id.length < 1) return;
+
+    _isLoadMsg = false;
+    
+    $.ajax ({ url: _url6, data: {
+      id: id,
+    }, async: true, cache: false, dataType: 'json', type: 'POST',
+      beforeSend: function () {
+        $(send).prop ('disabled', true).text ('發佈中..');
+        $meg.prop ('disabled', true);
+      }.bind ($(this))})
+    .done (function (result) {
+      $(send).prop ('disabled', false).text ('確定送出');
+      $meg.prop ('disabled', false).val ('');
+    }.bind ($(this)))
+    .fail (function () {})
+    .complete (function (result) {
+      _isLoadMsg = true;
+      loadMsg (false, true);
+    });
+  }
   function loadMsg (first, send) {
     if (!_isLoadMsg || _isLoadPath) return;
 
@@ -134,7 +158,11 @@ $(function () {
       $ltl.append ($('<div />').html ('請勿再稱白沙屯媽祖為白媽媽！<br/>最正確資訊請洽詢<a href="https://www.facebook.com/bstmz/" target="_blank">白沙屯拱天宮</a>官方粉絲頁，這是非官方而且非盈利網站，請幫忙分享出去給更多需要的人吧！'))
           .append ($('<div />').html ('目前聊天人數: ' + result.c + '人'))
           .append (result.m.map (function (t) {
-        return $('<div />').addClass (t.a ? 'a' : '').addClass ('icon-user2').attr ('data-ip', t.i).append ($('<span />').text (t.m)).append (t.a ? $('<b />').text ('站長') : null).append ($('<time />').text ($.timeago (t.t)))
+        return $('<div />').addClass (t.a ? 'a' : '').addClass ('icon-user2').attr ('data-ip', t.i)
+                           .append ($('<span />').text (t.m))
+                           .append (t.a ? $('<b />').text ('站長') : null)
+                           .append ($('<time />').text ($.timeago (t.t)))
+                           .append ($('<a />').text ('檢舉').data ('id', t.d).click (to_black))
       }));
       if (send) _isLoadMsg = true;
     });

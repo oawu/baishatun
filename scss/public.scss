@@ -810,7 +810,7 @@ $aw: 20px;
 }
 #lt {
   @media screen and (min-width: 0px) and (max-width: #{$mediaMobileWidth - 1px}) {
-    $w: 220px;
+    $w: 250px;
     right: -$w;
     width: $w;
   }
@@ -1053,6 +1053,21 @@ $aw: 20px;
         font-size: 10px;
         color: rgba(235, 85, 30, 1);
       }
+      a {
+        @include button('orange');
+        font-weight: normal;
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        display: inline-block;
+        font-size: 10px;
+        padding: 0;
+        width: 32px;
+        height: 20px;
+        text-align: center;
+        line-height: 17px;
+        padding: 2px;
+      }
       time {
         position: absolute;
         right: 5px;
@@ -1068,6 +1083,7 @@ $aw: 20px;
         word-wrap: break-word; 
         word-break: break-all;
         min-height: 21px;
+        max-width: calc(100% - 37px);
         line-height: 19px;
         background-color: rgba(255, 255, 255, 1);
         padding: 5px;
