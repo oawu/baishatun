@@ -361,7 +361,7 @@ body {
   bottom: 10px;
   right: 50px;
   @media screen and (min-width: 0px) and (max-width: #{$mediaMobileWidth - 1px}) {
-    right: 45px;
+    right: 5px;
   }
   display: none;
   &.s {
@@ -374,7 +374,7 @@ body {
   bottom: 50px;
   right: 50px;
   @media screen and (min-width: 0px) and (max-width: #{$mediaMobileWidth - 1px}) {
-    right: 45px;
+    right: 5px;
   }
   display: none;
   &.s {
@@ -1109,6 +1109,59 @@ $aw: 20px;
       //     &:before {border-left-color: rgba(100, 100, 100, .6);;border-width: 4px + 1px;margin-top: -4px - 1px;}
       //   }
       // }
+    }
+  }
+}
+.gmnoprint {
+  @media screen and (min-width: 0px) and (max-width: #{$mediaMobileWidth - 1px}) {
+    display: none !important;
+  }
+}
+#p {
+  position: absolute;
+  bottom: 90px;
+  right: 50px;
+  @media screen and (min-width: 0px) and (max-width: #{$mediaMobileWidth - 1px}) {
+    right: 5px;
+  }
+  text-align: right;
+  padding: 3px 6px;
+  display: inline-block;
+  width: 90px;
+  font-size: 10px;
+  background-color: rgba(255, 255, 255, 1);
+  @include box-shadow(0 0 2px rgba(39, 40, 34, .3));
+  @include border-radius(2px);
+  @include clearfix();
+  
+
+  > div {
+    float: left;
+    display: inline-block;
+    width: 50%;
+
+    position: relative;
+
+    &:before {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: 4px;
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      @include border-radius(50%);
+      background-color: rgba(249, 39, 114, .55);
+      border: 1px solid rgba(249, 39, 114, .70);
+    }
+    &:first-child {
+      text-align: left;
+      padding-left: 13px;
+      &:before {
+        left: 2px;
+        background-color: rgba(139, 29, 169, .75);
+        border: 1px solid rgba(139, 29, 169, 1);
+      }
     }
   }
 }
