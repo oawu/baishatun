@@ -831,7 +831,7 @@ $aw: 20px;
   @include box-shadow(0 0 5px 1px rgba(39, 40, 34, .3), 1px 0 1px rgba(39, 40, 34, .3));
   @include opacity(0);
   @include transition(all .3s);
-  $h: 85px;
+  $h: 90px;
   &.ok {
     &:before, &:after {
       display: none;
