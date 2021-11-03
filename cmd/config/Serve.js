@@ -23,7 +23,7 @@ module.exports = {
     css: 'css',   // css
     img: 'img',   // 圖片
     js: 'js',     // js
-    html: '' // html
+    html: 'view' // html
   },
 
   watch: { // Live reload
