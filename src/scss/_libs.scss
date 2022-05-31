@@ -1,0 +1,70 @@
+//
+// @author      OA Wu <comdan66@gmail.com>
+// @copyright   Copyright (c) 2015 - 2021, Lalilo
+// @license     http://opensource.org/licenses/MIT  MIT License
+// @link        https://www.ioa.tw/
+//
+
+@import "Lalilo";
+
+@mixin dark() {
+  @media (prefers-color-scheme: dark) {
+    @content;
+  }
+}
+
+%-icon {
+  font-family: "icon";
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+}
+
+%-user-select-none {
+  @include user-select(none);
+}
+
+%-cover {
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+$ui-color: (
+  label: (light: rgba(0, 0, 0, 1), dark: rgba(255, 255, 255, 1)),
+  secondaryLabel: (light: rgba(60, 60, 67, 0.6), dark: rgba(235, 235, 245, 0.6)),
+  tertiaryLabel: (light: rgba(60, 60, 67, 0.3), dark: rgba(235, 235, 245, 0.3)),
+  quaternaryLabel: (light: rgba(60, 60, 67, 0.18), dark: rgba(235, 235, 245, 0.18)),
+  placeholderText: (light: rgba(60, 60, 67, 0.3), dark: rgba(235, 235, 245, 0.3)),
+  link: (light: rgba(0, 122, 255, 1), dark: rgba(9, 132, 255, 1)),
+  lightText: (light: rgba(255, 255, 255, 0.6), dark: rgba(255, 255, 255, 0.6)), darkText: (light: rgba(0, 0, 0, 1), dark: rgba(0, 0, 0, 1)),
+  systemBackground: (light: rgba(255, 255, 255, 1), dark: rgba(0, 0, 0, 1)),
+  secondarySystemBackground: (light: rgba(242, 242, 247, 1), dark: rgba(28, 28, 30, 1)),
+  tertiarySystemBackground: (light: rgba(255, 255, 255, 1), dark: rgba(44, 44, 46, 1)),
+  systemGroupedBackground: (light: rgba(242, 242, 247, 1), dark: rgba(0, 0, 0, 1)),
+  secondarySystemGroupedBackground: (light: rgba(255, 255, 255, 1), dark: rgba(28, 28, 30, 1)),
+  tertiarySystemGroupedBackground: (light: rgba(242, 242, 247, 1), dark: rgba(44, 44, 46, 1)),
+  systemBlue: (light: rgba(0, 122, 255, 1), dark: rgba(10, 132, 255, 1)),
+  systemGreen: (light: rgba(52, 199, 89, 1), dark: rgba(48, 209, 88, 1)),
+  systemIndigo: (light: rgba(88, 86, 214, 1), dark: rgba(94, 92, 230, 1)),
+  systemOrange: (light: rgba(255, 149, 0, 1), dark: rgba(255, 159, 10, 1)),
+  systemPink: (light: rgba(255, 45, 85, 1), dark: rgba(255, 55, 95, 1)),
+  systemPurple: (light: rgba(175, 82, 222, 1), dark: rgba(191, 90, 242, 1)),
+  systemRed: (light: rgba(255, 59, 48, 1), dark: rgba(255, 69, 58, 1)),
+  systemTeal: (light: rgba(90, 200, 250, 1), dark: rgba(100, 210, 255, 1)),
+  systemYellow: (light: rgba(255, 204, 0, 1), dark: rgba(255, 214, 10, 1)),
+  separator: (light: rgba(60, 60, 67, 0.29), dark: rgba(84, 84, 88, 0.6)),
+  opaqueSeparator: (light: rgba(198, 198, 200, 1), dark: rgba(56, 56, 58, 1)),
+  systemFill: (light: rgba(120, 120, 128, 0.2), dark: rgba(120, 120, 128, 0.36)),
+  secondarySystemFill: (light: rgba(120, 120, 128, 0.16), dark: rgba(120, 120, 128, 0.32)),
+  tertiarySystemFill: (light: rgba(118, 118, 128, 0.12), dark: rgba(118, 118, 128, 0.24)),
+  quaternarySystemFill: (light: rgba(116, 116, 128, 0.08), dark: rgba(118, 118, 128, 0.18)),
+  systemGray: (light: rgba(142, 142, 147, 1), dark: rgba(142, 142, 147, 1)),
+  systemGray2: (light: rgba(174, 174, 178, 1), dark: rgba(99, 99, 102, 1)),
+  systemGray3: (light: rgba(199, 199, 204, 1), dark: rgba(72, 72, 74, 1)),
+  systemGray4: (light: rgba(209, 209, 214, 1), dark: rgba(58, 58, 60, 1)),
+  systemGray5: (light: rgba(229, 229, 234, 1), dark: rgba(44, 44, 46, 1)),
+  systemGray6: (light: rgba(242, 242, 247, 1), dark: rgba(28, 28, 30, 1))
+);
